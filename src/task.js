@@ -5,6 +5,8 @@ export function addTask(command, args) {
 }
 
 export function exec(task) {
+  console.info(`Running ${task.command} ${task.args.join(" ")}`);
+
   const spawned = spawn(task.command, task.args, { shell: true });
 
   return new Promise(async (res, rej) => {
@@ -13,7 +15,11 @@ export function exec(task) {
       rej();
     });
 
-    spawned.stderr.on("data", (data) => {
+    // spawned.stderr.on("error", (error) => {
+    //   console.error(error.toString());
+    // });
+
+    spawned.stdout.on("data", (data) => {
       console.info(data.toString());
     });
 
@@ -21,6 +27,7 @@ export function exec(task) {
       if (code !== 0) {
         rej(`Task exit with status ${code}`);
       } else {
+        console.info(`Finish ${task.command} ${task.args.join(" ")}`);
         res(code);
       }
     });

@@ -8,6 +8,6 @@
     "test": "node ./src/index.js"
   },
   "bin": {
-    "gcp": "./src/index.js"
+    "gs": "./src/index.js"
   }
 }
