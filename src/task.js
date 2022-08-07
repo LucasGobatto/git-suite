@@ -5,11 +5,9 @@ export function addTask(command, args) {
 }
 
 export function exec(task) {
+  const spawned = spawn(task.command, task.args, { shell: true });
+
   return new Promise(async (res, rej) => {
-    // await sleep();
-
-    const spawned = spawn(task.command, task.args, { shell: true });
-
     spawned.on("error", (error) => {
       console.error(`Task failed with message: ${error.message}`);
       rej();
@@ -26,13 +24,5 @@ export function exec(task) {
         res(code);
       }
     });
-  });
-}
-
-function sleep() {
-  return new Promise((res) => {
-    setTimeout(() => {
-      res();
-    }, 1000);
   });
 }
