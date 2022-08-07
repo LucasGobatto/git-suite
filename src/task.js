@@ -28,7 +28,6 @@ export function exec(task) {
       if (code !== 0) {
         rej(`Task exit with status ${code}.`);
       } else {
-        log.info(`Finish ${task.command} ${task.args.join(" ")}`);
         res(code);
       }
     });

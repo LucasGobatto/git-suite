@@ -120,6 +120,8 @@ async function runTasks() {
   if (ggp) {
     await exec(ggp);
   }
+
+  log.info(`Git flow finished successfully`);
 }
 
 runTasks();
