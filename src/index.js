@@ -121,7 +121,7 @@ async function runTasks() {
     await exec(ggp);
   }
 
-  log.info(`Git flow finished successfully`);
+  log.success(`Git flow finished successfully!`);
 }
 
 runTasks();
