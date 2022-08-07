@@ -6,9 +6,7 @@ export function addTask(command, args) {
 
 export function exec(task) {
   return new Promise(async (res, rej) => {
-    console.info(`1 Running ${[task.command, ...(task.args ?? [])].join(" ")}`);
-    await sleep();
-    console.info(`2 Running ${[task.command, ...(task.args ?? [])].join(" ")}`);
+    // await sleep();
 
     const spawned = spawn(task.command, task.args, { shell: true });
 
