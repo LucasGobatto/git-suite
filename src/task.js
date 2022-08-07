@@ -15,9 +15,9 @@ export function exec(task) {
       rej();
     });
 
-    // spawned.stderr.on("error", (error) => {
-    //   console.error(error.toString());
-    // });
+    spawned.stderr.on("error", (error) => {
+      console.error(error.toString());
+    });
 
     spawned.stdout.on("data", (data) => {
       console.info(data.toString());
