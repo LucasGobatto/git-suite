@@ -56,27 +56,36 @@ const ggp = gitPushParam && addTask("git", ["push", gPushForceParam ? "-f origin
 const grh = gResetHeadParam && addTask("git", ["reset", `HEAD~${gResetHeadParam ?? 1}`]);
 
 async function runTasks() {
-  try {
-    if (grh) {
-      await exec(grh);
-    }
+  if (grh) {
+    await exec(grh);
+    await sleep();
+  }
 
-    if (gaa.length) {
-      gaa.forEach(async (task) => {
-        await exec(task);
-      });
-    }
+  if (gaa.length) {
+    gaa.forEach(async (task) => {
+      await exec(task);
+      await sleep();
+    });
+  }
 
-    if (gcmsg) {
-      await exec(gcmsg);
-    }
+  if (gcmsg) {
+    await exec(gcmsg);
+    await sleep();
+  }
 
-    if (ggp) {
-      await exec(ggp);
-    }
-  } catch (error) {
-    console.log(error);
+  if (ggp) {
+    await exec(ggp);
+    await sleep();
   }
 }
 
-runTasks();
+await runTasks();
+
+function sleep() {
+  return new Promise((res) => {
+    setTimeout(() => {
+      console.log("finish sleep");
+      res();
+    }, 2000);
+  });
+}
