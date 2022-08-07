@@ -16,7 +16,8 @@ const args = process.argv;
 const extraParams = process.argv.slice(2);
 
 if (!extraParams.length) {
-  throw new Error("git suite must come with some argument. Type `gs --help` to see list of commands");
+  console.error("git suite must come with some argument. Type `gs --help` to see list of commands");
+  process.exit(1);
 }
 
 if (extraParams[0] === extraCommands[0]) {
@@ -36,7 +37,8 @@ const invalidParam = extraParams.find(
 );
 
 if (invalidParam) {
-  throw new Error(`Param ${invalidParam} is not a valid command. Type \`gs --help\` to see list of commands`);
+  console.error(`Param ${invalidParam} is not a valid command. Type \`gs --help\` to see list of commands`);
+  process.exit(1);
 }
 
 const gAddIndex = args.findIndex((param) => param === validCommands[0] || param === validCommands[1]);
@@ -47,19 +49,23 @@ const gPushForceIndex = args.findIndex((param) => param === validCommands[6] || 
 const gResetHeadIndex = args.findIndex((param) => param === validCommands[8] || param === validCommands[9]);
 
 if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
-  throw new Error('Flag message must come with a value like `-c "commit message"`');
+  console.error('Flag message must come with a value like `-c "commit message"`');
+  process.exit(1);
 }
 
 if (gCommitTypeIndex > -1 && gCommitIndex === -1) {
-  throw new Error('Commit types flags must come with commit flag `-c "commit message" --fx`');
+  console.error('Commit types flags must come with commit flag `-c "commit message" --fx`');
+  process.exit(1);
 }
 
 if (validCommands.includes(args[gPushIndex + 1]) || !args[gPushIndex + 1]) {
-  throw new Error('Flag push must come with the branch name "-p branch-name"');
+  console.error('Flag push must come with the branch name "-p branch-name"');
+  process.exit(1);
 }
 
 if (gPushForceIndex > -1 && gPushIndex < 0) {
-  throw new Error('Push force must come with the push flash "-p branch-name"');
+  console.error('Push force must come with the push flash "-p branch-name"');
+  process.exit(1);
 }
 
 if (
@@ -68,7 +74,8 @@ if (
   args[gResetHeadIndex + 1] &&
   !Number(args[gResetHeadIndex + 1])
 ) {
-  throw new Error('Reset head must come with a number "-rh 1". If pass anything, the default is 1');
+  console.error('Reset head must come with a number "-rh 1". If pass anything, the default is 1');
+  process.exit(1);
 }
 
 const gitAddFiles =
