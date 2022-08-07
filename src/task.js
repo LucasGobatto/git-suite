@@ -5,7 +5,7 @@ export function addTask(command, args) {
 }
 
 export function exec(task) {
-  console.info(`Running ${[task.command, ...task.args].join(" ")}`);
+  console.info(`Running ${[task.command, ...(task.args ?? [])].join(" ")}`);
 
   return new Promise((res, rej) => {
     const spawned = spawn(task.command, task.args, { shell: true });

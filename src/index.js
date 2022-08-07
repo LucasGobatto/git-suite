@@ -5,7 +5,6 @@ import { exec, addTask } from "./task.js";
 const validCommands = ["-a", "-add", "-m", "-message", "-p", "-push", "-f", "--force"];
 
 const args = process.argv;
-const extraParams = args.slice(2);
 
 const gAddIndex = args.findIndex((param) => param === validCommands[0] || param === validCommands[1]);
 const gCommitIndex = args.findIndex((param) => param === validCommands[2] || param === validCommands[3]);
@@ -24,12 +23,13 @@ if (gPushForceIndex > -1 && gPushIndex < 0) {
   throw new Error('Push force must come with the push flash "-p branch-name"');
 }
 
-const gitAddFiles = args[gAddIndex + 1] && !validCommands.includes(args[gAddIndex + 1]) ? extraParams[gAddIndex - 1] : undefined;
-const gitCommitParam = extraParams[gCommitIndex - 1];
-const gitPushParam = extraParams[gPushIndex - 1];
-const gPushForceParam = extraParams[gPushForceIndex - 1];
+const gitAddFiles = args[gAddIndex + 1] && !validCommands.includes(args[gAddIndex + 1]) ? args[gAddIndex + 1] : undefined;
+const gitCommitParam = args[gCommitIndex + 1];
+const gitPushParam = args[gPushIndex + 1];
+const gPushForceParam = args[gPushForceIndex + 1];
 
 const gaa = [];
+
 if (gitAddFiles) {
   gitAddFiles.split(",").forEach((file) => {
     const task = addTask("git", ["add", file]);
@@ -39,7 +39,7 @@ if (gitAddFiles) {
   gaa.push(addTask("git", ["add", "."]));
 }
 
-const gcmsg = gitCommitParam && addTask("git", ["commit", "-m", gitCommitParam]);
+const gcmsg = gitCommitParam && addTask(`git commit -m "${gitCommitParam}"`);
 const ggp = gitPushParam && addTask("git", ["push", gPushForceParam ? "-f" : "", "origin", gitPushParam]);
 
 async function runTasks() {
