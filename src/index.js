@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-
 import { exec, addTask } from "./task.js";
+import { log } from "./log.js";
 
 const extraCommands = ["--help"];
 const validCommands = ["-a", "-add", "-c", "-commit", "-p", "-push", "-f", "-force", "-rh", "-reset-head", "--help"];
@@ -16,7 +16,7 @@ const args = process.argv;
 const extraParams = process.argv.slice(2);
 
 if (!extraParams.length) {
-  console.error("git suite must come with some argument. Type `gs --help` to see list of commands");
+  log.error("git suite must come with some argument. Type `gs --help` to see list of commands.");
   process.exit(1);
 }
 
@@ -37,7 +37,7 @@ const invalidParam = extraParams.find(
 );
 
 if (invalidParam) {
-  console.error(`Param ${invalidParam} is not a valid command. Type \`gs --help\` to see list of commands`);
+  log.error(`Param ${invalidParam} is not a valid command. Type \`gs --help\` to see list of commands.`);
   process.exit(1);
 }
 
@@ -49,22 +49,22 @@ const gPushForceIndex = args.findIndex((param) => param === validCommands[6] || 
 const gResetHeadIndex = args.findIndex((param) => param === validCommands[8] || param === validCommands[9]);
 
 if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
-  console.error('Flag message must come with a value like `-c "commit message"`');
+  log.error('Flag message must come with a value like `-c "commit message"`.');
   process.exit(1);
 }
 
 if (gCommitTypeIndex > -1 && gCommitIndex === -1) {
-  console.error('Commit types flags must come with commit flag `-c "commit message" --fx`');
+  log.error('Commit types flags must come with commit flag `-c "commit message" --fx`.');
   process.exit(1);
 }
 
 if (validCommands.includes(args[gPushIndex + 1]) || !args[gPushIndex + 1]) {
-  console.error('Flag push must come with the branch name "-p branch-name"');
+  log.error('Flag push must come with the branch name "-p branch-name".');
   process.exit(1);
 }
 
 if (gPushForceIndex > -1 && gPushIndex < 0) {
-  console.error('Push force must come with the push flash "-p branch-name"');
+  log.error('Push force must come with the push flash "-p branch-name".');
   process.exit(1);
 }
 
@@ -74,7 +74,7 @@ if (
   args[gResetHeadIndex + 1] &&
   !Number(args[gResetHeadIndex + 1])
 ) {
-  console.error('Reset head must come with a number "-rh 1". If pass anything, the default is 1');
+  log.error('Reset head must come with a number "-rh 1". If pass anything, the default is 1.');
   process.exit(1);
 }
 

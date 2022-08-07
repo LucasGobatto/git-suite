@@ -9,5 +9,8 @@
   },
   "bin": {
     "gs": "./src/index.js"
+  },
+  "dependencies": {
+    "chalk": "5.0.1"
   }
 }
