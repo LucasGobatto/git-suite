@@ -76,7 +76,7 @@ const gitAddFiles =
 const gitCommitParam = gCommitIndex > -1 && args[gCommitIndex + 1];
 const gCommitType = gCommitTypeIndex > -1 && types[args[gCommitTypeIndex]];
 const gitPushParam = gPushIndex > -1 && args[gPushIndex + 1];
-const gPushForceParam = gPushForceIndex > -1 && args[gPushForceIndex + 1];
+const gPushForceParam = gPushForceIndex > -1 && args[gPushForceIndex];
 const gResetHeadParam = gResetHeadIndex > -1 ? args[gResetHeadIndex + 1] ?? 1 : undefined;
 
 const gaa = [];
