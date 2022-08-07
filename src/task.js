@@ -12,10 +12,12 @@ export function exec(task) {
 
     spawned.stderr.on("error", (error) => {
       console.error(`Task failed with message: ${error.message}`);
+      rej();
     });
 
     spawned.stdout.on("data", (data) => {
       console.info(data.toString());
+      res();
     });
 
     spawned.on("exit", (code) => {
