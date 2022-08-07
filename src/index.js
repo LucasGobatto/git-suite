@@ -58,34 +58,21 @@ const grh = gResetHeadParam && addTask("git", ["reset", `HEAD~${gResetHeadParam 
 async function runTasks() {
   if (grh) {
     await exec(grh);
-    await sleep();
   }
 
   if (gaa.length) {
-    gaa.forEach(async (task) => {
+    for (const task of gaa) {
       await exec(task);
-      await sleep();
-    });
+    }
   }
 
   if (gcmsg) {
     await exec(gcmsg);
-    await sleep();
   }
 
   if (ggp) {
     await exec(ggp);
-    await sleep();
   }
 }
 
-await runTasks();
-
-function sleep() {
-  return new Promise((res) => {
-    setTimeout(() => {
-      console.log("finish sleep");
-      res();
-    }, 2000);
-  });
-}
+runTasks();
