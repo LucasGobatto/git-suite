@@ -1,15 +1,17 @@
 #!/usr/bin/env node
+
 import { exec, addTask } from "./task.js";
 import { log } from "./log.js";
 
 const extraCommands = ["--help"];
 const validCommands = ["-a", "-add", "-c", "-commit", "-p", "-push", "-f", "-force", "-rh", "-reset-head", "--help"];
-const commitType = ["--ft", "--fx", "--e", "--c"];
+const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 const types = {
   [commitType[0]]: "feat",
   [commitType[1]]: "fix",
-  [commitType[2]]: "enhanc",
+  [commitType[2]]: "enhance",
   [commitType[3]]: "chore",
+  [commitType[4]]: "docs",
 };
 
 const args = process.argv;
@@ -25,7 +27,7 @@ if (extraParams[0] === extraCommands[0]) {
   console.info("Usage:\n");
   console.info("-add | -a [<file>,<file>,...]\t\tgit add <file>\t\t\t[default] git add .");
   console.info('-commit | -c <message>\t\t\tgit commit -m "message"');
-  console.info('--ft | --fx | --e | --c\t\t\tgit commit -m "flag: message"\tmust comt with -c flag');
+  console.info('--ft | --fx | --e | --c | --d\t\t\tgit commit -m "flag: message"\tmust comt with -c flag');
   console.info("-push | -p <branch>\t\t\tgit push origin <branch>");
   console.info("-force | -f\t\t\t\tgit push -f origin <branch>\tmust come with -push flag");
   console.info("-rest-head | -rs [<number>]\t\tgit reset HEAD~<number>\t\t[default] git reset HEAD~1");

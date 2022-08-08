@@ -12,5 +12,9 @@
   },
   "dependencies": {
     "chalk": "5.0.1"
+  },
+  "engines": {
+    "node": "16.10.0",
+    "npm": ">=7.0.0"
   }
 }
