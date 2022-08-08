@@ -6,21 +6,37 @@ A command line application to simplify the git workflow on committing, pushing a
 
 Install Node Package Manager [npm](https://www.npmjs.com/) and Node Version Manager [nvm](https://github.com/nvm-sh/nvm/blob/master/README.md#installing-and-updating). Have [git](https://git-scm.com/) installed and [configured](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) on your machine.
 
+# Info
+**Exemple**
+
+Runs the command
+```sh
+$ gs -a -c "initial commit" --ft -p main -f
+```
+
+to get the flowing:
+```sh
+$ git add .
+$ git commit -m "feat: initial commit"
+$ git push -f origin main
+```
+Simple as that!
+
 # How to use
 
 1. Clone this repo:
-```
-git clone https://github.com/LucasGobatto/git-suite
+```sh
+$ git clone https://github.com/LucasGobatto/git-suite
 ```
 2. On folder `/git-suite` run `nvm use` and `npm install`;
 3. Install globally:
-```
-npm install -g
+```sh
+$ npm install -g
 ```
 
 Done! To see the list of all valid commands on terminal, run:
-```
-gs --help
+```sh
+$ gs --help
 ```
 
 ## Valid Commands
