@@ -99,7 +99,6 @@ if (gitAddFiles) {
   gaa.push(addTask("git", ["add", "."]));
 }
 
-console.log({ gPushBranch, gitPushParam });
 const gcmsg =
   gitCommitParam && addTask("git", ["commit", `-m "${gCommitType ? `${gCommitType}: ${gitCommitParam}` : gitCommitParam}"`]);
 const ggp =
