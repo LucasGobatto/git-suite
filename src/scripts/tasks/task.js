@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import { log } from "./log/log.js";
+import { log } from "../../log/log.js";
 
 export function addTask(command, args) {
   return { command, args };

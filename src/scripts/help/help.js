@@ -8,5 +8,4 @@ export function help() {
   console.info("-force | -f\t\t\t\tgit push -f origin <branch>\tmust come with -push flag");
   console.info("-rest-head | -rs [<number>]\t\tgit reset HEAD~<number>\t\t[default] git reset HEAD~1");
   console.info();
-  process.exit(0);
 }
