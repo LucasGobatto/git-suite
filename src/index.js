@@ -118,7 +118,10 @@ const gcmsg =
 const ggp =
   gitPushParam && addTask("git", ["push", gPushForceParam && "-f", gPushBranch && `origin ${gPushBranch}`].filter(Boolean));
 const grh = gResetHeadParam && addTask("git", ["reset", `HEAD~${gResetHeadParam ?? 1}`]);
-const grb = gRebaseBranchs && runRebaseTask(gRebaseBranchs);
+
+if (gRebaseBranchs) {
+  await runRebaseTask(gRebaseBranchs);
+}
 
 async function runTasks() {
   if (grh) {
