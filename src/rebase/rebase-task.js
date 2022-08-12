@@ -3,7 +3,6 @@ import { log } from "../log/log.js";
 
 export async function runRebaseTask(branchs) {
   const [target, origin] = branchs;
-  console.log(branchs);
 
   const goToTargetBranch = addTask("git", ["checkout", target]);
   const gitPull = addTask("git", ["pull"]);
@@ -15,6 +14,7 @@ export async function runRebaseTask(branchs) {
   await exec(goToCurrentBranch);
   await exec(makeRebase);
 
-  log.success(`Git flow finished successfully!`);
+  log.info("Run `gs -p` to push or `gs --c` to continue rebase.\n");
+  log.success("Git flow finished successfully!");
   process.exit(0);
 }
