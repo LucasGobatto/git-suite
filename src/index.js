@@ -100,7 +100,7 @@ const gitPushParam = gPushIndex > -1;
 const gPushBranch = gPushIndex > -1 && !validCommands.includes(args[gPushIndex + 1]) ? args[gPushIndex + 1] : undefined;
 const gPushForceParam = gPushForceIndex > -1 && args[gPushForceIndex];
 const gResetHeadParam = gResetHeadIndex > -1 ? args[gResetHeadIndex + 1] ?? 1 : undefined;
-const gRebaseBranchs = gRebaseIndex > -1 ? [args[gRebaseIndex + 1], args[gRebaseIndex]] : undefined;
+const gRebaseBranchs = gRebaseIndex > -1 ? [args[gRebaseIndex + 1], args[gRebaseIndex + 2]] : undefined;
 
 const gaa = [];
 

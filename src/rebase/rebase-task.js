@@ -3,6 +3,7 @@ import { log } from "../log/log.js";
 
 export async function runRebaseTask(branchs) {
   const [target, origin] = branchs;
+  console.log(branchs);
 
   const goToTargetBranch = addTask("git", ["checkout", target]);
   const gitPull = addTask("git", ["pull"]);
