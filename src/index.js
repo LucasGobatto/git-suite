@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 import { exec, addTask } from "./task.js";
-import { log } from "./log.js";
+import { log } from "./log/log.js";
+import { help } from "./help/help.js";
 
 const extraCommands = ["--help"];
-const validCommands = ["-a", "-add", "-c", "-commit", "-p", "-push", "-f", "-force", "-rh", "-reset-head", "--help"];
+const validCommands = ["-a", "-add", "-c", "-commit", "-p", "-push", "-f", "-force", "-rh", "-reset-head"];
 const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 const types = {
   [commitType[0]]: "feat",
@@ -23,15 +24,7 @@ if (!extraParams.length) {
 }
 
 if (extraParams[0] === extraCommands[0]) {
-  console.info("gs [--help] <command> [<args>]\n");
-  console.info("Usage:\n");
-  console.info("-add | -a [<file>,<file>,...]\t\tgit add <file>\t\t\t[default] git add .");
-  console.info('-commit | -c <message>\t\t\tgit commit -m "message"');
-  console.info('--ft | --fx | --e | --c | --d\t\t\tgit commit -m "flag: message"\tmust comt with -c flag');
-  console.info("-push | -p <branch>\t\t\tgit push origin <branch>");
-  console.info("-force | -f\t\t\t\tgit push -f origin <branch>\tmust come with -push flag");
-  console.info("-rest-head | -rs [<number>]\t\tgit reset HEAD~<number>\t\t[default] git reset HEAD~1");
-  console.info();
+  help();
 }
 
 const invalidParam = extraParams.find(
@@ -43,48 +36,55 @@ if (invalidParam) {
   process.exit(1);
 }
 
-const gAddIndex = args.findIndex((param) => param === validCommands[0] || param === validCommands[1]);
-const gCommitIndex = args.findIndex((param) => param === validCommands[2] || param === validCommands[3]);
+const getIndex = (index) => {
+  return args.findIndex((param) => param === validCommands[index] || param === validCommands[index + 1]);
+};
+
+const gAddIndex = getIndex(0);
+const gCommitIndex = getIndex(2);
+const gPushIndex = getIndex(4);
+const gResetHeadIndex = getIndex(8);
+const gPushForceIndex = getIndex(6);
 const gCommitTypeIndex = args.findIndex((param) => commitType.includes(param));
-const gPushIndex = args.findIndex((param) => param === validCommands[4] || param === validCommands[5]);
-const gPushForceIndex = args.findIndex((param) => param === validCommands[6] || param === validCommands[7]);
-const gResetHeadIndex = args.findIndex((param) => param === validCommands[8] || param === validCommands[9]);
 
-if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
-  log.error('Flag message must come with a value like `-c "commit message"`.');
-  process.exit(1);
-}
+const validateCommands = () => {
+  let status;
+  if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
+    log.error('Flag message must come with a value like `gs -c "commit message"`.');
+    status = 1;
+  }
 
-if (gCommitTypeIndex > -1 && gCommitIndex === -1) {
-  log.error('Commit types flags must come with commit flag `-c "commit message" --fx`.');
-  process.exit(1);
-}
+  if (gCommitTypeIndex > -1 && gCommitIndex === -1) {
+    log.error('Commit types flags must come with commit flag `gs -c "commit message" --fx`.');
+    status = 1;
+  }
 
-if (validCommands.includes(args[gPushIndex + 1]) || !args[gPushIndex + 1]) {
-  log.error('Flag push must come with the branch name "-p branch-name".');
-  process.exit(1);
-}
+  if (gPushForceIndex > -1 && gPushIndex < 0) {
+    log.error("Push force must come with the push flag `gs -p -f`.");
+    status = 1;
+  }
 
-if (gPushForceIndex > -1 && gPushIndex < 0) {
-  log.error('Push force must come with the push flash "-p branch-name".');
-  process.exit(1);
-}
+  if (
+    gResetHeadIndex > -1 &&
+    !validCommands.includes(args[gResetHeadIndex + 1]) &&
+    args[gResetHeadIndex + 1] &&
+    !Number(args[gResetHeadIndex + 1])
+  ) {
+    log.error('Reset head must come with a number "-rh 1". If pass anything, the default is 1.');
+    status = 1;
+  }
 
-if (
-  gResetHeadIndex > -1 &&
-  !validCommands.includes(args[gResetHeadIndex + 1]) &&
-  args[gResetHeadIndex + 1] &&
-  !Number(args[gResetHeadIndex + 1])
-) {
-  log.error('Reset head must come with a number "-rh 1". If pass anything, the default is 1.');
-  process.exit(1);
-}
+  status && process.exit(status);
+};
+
+validateCommands();
 
 const gitAddFiles =
   gAddIndex > -1 && args[gAddIndex + 1] && !validCommands.includes(args[gAddIndex + 1]) ? args[gAddIndex + 1] : undefined;
 const gitCommitParam = gCommitIndex > -1 && args[gCommitIndex + 1];
 const gCommitType = gCommitTypeIndex > -1 && types[args[gCommitTypeIndex]];
-const gitPushParam = gPushIndex > -1 && args[gPushIndex + 1];
+const gitPushParam = gPushIndex > -1;
+const gPushBranch = gPushIndex > -1 && !validCommands.includes(args[gPushIndex + 1]) ? args[gPushIndex + 1] : undefined;
 const gPushForceParam = gPushForceIndex > -1 && args[gPushForceIndex];
 const gResetHeadParam = gResetHeadIndex > -1 ? args[gResetHeadIndex + 1] ?? 1 : undefined;
 
@@ -99,9 +99,11 @@ if (gitAddFiles) {
   gaa.push(addTask("git", ["add", "."]));
 }
 
+console.log({ gPushBranch, gitPushParam });
 const gcmsg =
   gitCommitParam && addTask("git", ["commit", `-m "${gCommitType ? `${gCommitType}: ${gitCommitParam}` : gitCommitParam}"`]);
-const ggp = gitPushParam && addTask("git", ["push", gPushForceParam ? "-f origin" : "origin", gitPushParam]);
+const ggp =
+  gitPushParam && addTask("git", ["push", gPushForceParam && "-f", gPushBranch && `origin ${gPushBranch}`].filter(Boolean));
 const grh = gResetHeadParam && addTask("git", ["reset", `HEAD~${gResetHeadParam ?? 1}`]);
 
 async function runTasks() {

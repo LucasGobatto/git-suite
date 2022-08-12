@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import { log } from "./log.js";
+import { log } from "./log/log.js";
 
 export function addTask(command, args) {
   return { command, args };
@@ -14,10 +14,6 @@ export function exec(task) {
     spawned.on("error", (error) => {
       log.error(`Task failed with message: ${error.message}.`);
       rej();
-    });
-
-    spawned.stderr.on("error", (error) => {
-      log.error(error.toString());
     });
 
     spawned.stdout.on("data", (data) => {
