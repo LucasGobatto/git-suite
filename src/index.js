@@ -3,9 +3,10 @@
 import { exec, addTask } from "./task.js";
 import { log } from "./log/log.js";
 import { help } from "./help/help.js";
+import { runRebaseTask } from "./rebase/rebase-task.js";
 
 const extraCommands = ["--help"];
-const validCommands = ["-a", "-add", "-c", "-commit", "-p", "-push", "-f", "-force", "-rh", "-reset-head"];
+const validCommands = ["-a", "-add", "-c", "-commit", "-p", "-push", "-f", "-force", "-rh", "-reset-head", "-r", "-rebase"];
 const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 const types = {
   [commitType[0]]: "feat",
@@ -43,25 +44,25 @@ const getIndex = (index) => {
 const gAddIndex = getIndex(0);
 const gCommitIndex = getIndex(2);
 const gPushIndex = getIndex(4);
-const gResetHeadIndex = getIndex(8);
 const gPushForceIndex = getIndex(6);
+const gResetHeadIndex = getIndex(8);
+const gRebaseIndex = getIndex(10);
 const gCommitTypeIndex = args.findIndex((param) => commitType.includes(param));
 
 const validateCommands = () => {
-  let status;
   if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
     log.error('Flag message must come with a value like `gs -c "commit message"`.');
-    status = 1;
+    process.exit(1);
   }
 
   if (gCommitTypeIndex > -1 && gCommitIndex === -1) {
     log.error('Commit types flags must come with commit flag `gs -c "commit message" --fx`.');
-    status = 1;
+    process.exit(1);
   }
 
   if (gPushForceIndex > -1 && gPushIndex < 0) {
     log.error("Push force must come with the push flag `gs -p -f`.");
-    status = 1;
+    process.exit(1);
   }
 
   if (
@@ -71,10 +72,22 @@ const validateCommands = () => {
     !Number(args[gResetHeadIndex + 1])
   ) {
     log.error('Reset head must come with a number "-rh 1". If pass anything, the default is 1.');
-    status = 1;
+    process.exit(1);
   }
 
-  status && process.exit(status);
+  if (
+    (gRebaseIndex > -1 && extraParams.length < 3) ||
+    validCommands.includes(args[gRebaseIndex + 1]) ||
+    validCommands.includes(args[gRebaseIndex + 2])
+  ) {
+    log.error("Rebase flag requires the target branchs names `gs -r target-branch <origin-branch>`"); // todo - review this message
+    process.exit(1);
+  }
+
+  if (gRebaseIndex > -1 && gRebaseIndex !== 2 && !(2 <= extraParams.length && extraParams.length <= 3)) {
+    log.error("Cannot do anything these than rebase when rebase flag is setted up");
+    process.exit(1);
+  }
 };
 
 validateCommands();
@@ -87,6 +100,7 @@ const gitPushParam = gPushIndex > -1;
 const gPushBranch = gPushIndex > -1 && !validCommands.includes(args[gPushIndex + 1]) ? args[gPushIndex + 1] : undefined;
 const gPushForceParam = gPushForceIndex > -1 && args[gPushForceIndex];
 const gResetHeadParam = gResetHeadIndex > -1 ? args[gResetHeadIndex + 1] ?? 1 : undefined;
+const gRebaseBranchs = gRebaseIndex > -1 ? [args[gRebaseIndex + 1], args[gRebaseIndex + 2]] : undefined;
 
 const gaa = [];
 
@@ -104,6 +118,10 @@ const gcmsg =
 const ggp =
   gitPushParam && addTask("git", ["push", gPushForceParam && "-f", gPushBranch && `origin ${gPushBranch}`].filter(Boolean));
 const grh = gResetHeadParam && addTask("git", ["reset", `HEAD~${gResetHeadParam ?? 1}`]);
+
+if (gRebaseBranchs) {
+  await runRebaseTask(gRebaseBranchs);
+}
 
 async function runTasks() {
   if (grh) {
