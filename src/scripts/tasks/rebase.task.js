@@ -27,7 +27,7 @@ export async function gitRebaseTask(args) {
     await exec(goToCurrentBranch);
     await exec(makeRebase);
 
-    log.info("Run `gs -p` to push or `gs --c` to continue rebase.\n");
+    log.info("Run `gs -p -f` to push or `gs --c` to continue rebase.\n");
     log.success("Git flow finished successfully!");
     process.exit(0);
   }
