@@ -13,7 +13,7 @@ Install Node Package Manager [npm](https://www.npmjs.com/) and Node Version Mana
 Runs the command
 
 ```sh
-$ gs -a -c "initial commit" --ft -p main -f
+$ gs -a -m "initial commit" --ft -p main -f
 ```
 
 to get the flowing:
@@ -51,7 +51,7 @@ $ gs --help
 
 **1. Git add:** `gs -a | -add [<file>,<file>]` or - runs `git add .` by default. Specify files to add concatenating the paths with a comma, like `gs -a path/to/file1.js,path/to/file2.js`;
 
-**2. Git commit:** `gs -c | -commit "message" [--ft | --fx | --c | --e]` - runs `git commit -m "message"`. If the commit type flag is specified, the final commit message will be:
+**2. Git commit:** `gs -m | -message "message" [--ft | --fx | --c | --e]` - runs `git commit -m "message"`. If the commit type flag is specified, the final commit message will be:
 
 - `--ft` --> `"feat: message"`;
 - `--fx` --> `"fix: message"`;
@@ -59,17 +59,25 @@ $ gs --help
 - `--e` --> `"enhance: message"`;
 - `--d` --> `"docs: message"`;
 
-**3. Git push:** `gs -p | -push <branch-name> [-f | -force]` - runs `git push origin <branch-name>`. The force flag is optional;
+**3. Git push:** `gs -p | -push [<branch-name>] [-f | -force]` - runs `git push origin <branch-name>`. The force flag is optional;
+
+### Warning!
+
+Not providing the branch name will push all local changes, including the changes from others branchs.
 
 **4. Git reset HEAD:** `gs -rh | -reset-head [<number>]` - runs `git reset HEAD~<number>`. By default, with remove 1 commit from the HEAD.
 
-**5. Git rebase:** `gs -r target-branch current-branch` - runs:
+**5. Git rebase:** `gs -r to-rebase-branch head-branch` - runs:
 
 ```sh
-$ git checkout target-branch
+$ git checkout head-branch
 $ git pull
-$ git checkout current-branch
-$ git rebase target-branch
+$ git checkout to-rebase-branch
+$ git rebase to-rebase-branch
 ```
 
-If any conflicts occur in the rebase process, it will stop to resolve the conflicts. After rebase, run `gs -p -f` to push the current branch.
+Runs the rebase process. It can be triggered within any branch, precisely because it makes the checkouts on the mentioned branchs, ensuring that the rebase process is performed to the correct ones.
+
+Note: If any conflicts occur in the rebase process, it will stop to resolve the conflicts. After rebase, run `gs -p -f` to push the current branch.
+
+**6. Git checkout:** `gs -c <branch-name>` - runs `git checkout branch-name`. Change to "brach-name" branch. It is allowed to create a new branch running `gs -cb branch-name`.
