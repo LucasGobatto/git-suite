@@ -8,11 +8,11 @@ export function gitCommitTask(args) {
 
   if (gCommitIndex > -1) {
     if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
-      throw new Error('Flag message must come with a value like `gs -c "commit message"`.');
+      throw new Error('Flag message must come with a value like `gs -m "commit message"`.');
     }
 
     if (gCommitTypeIndex > -1 && gCommitIndex === -1) {
-      throw new Error('Commit types flags must come with commit flag `gs -c "commit message" --fx`.');
+      throw new Error('Commit types flags must come with commit flag `gs -m "commit message" --fx`.');
     }
 
     const gitCommitParam = args[gCommitIndex + 1];
