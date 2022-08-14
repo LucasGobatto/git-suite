@@ -12,8 +12,13 @@ const error = (value) => {
   console.error(chalk.red("error:"), value);
 };
 
+const git = (value) => {
+  console.info(chalk.yellow("git:"), value);
+};
+
 export const log = {
   info,
   error,
   success,
+  git,
 };

@@ -13,11 +13,11 @@ export function exec(task) {
   return new Promise(async (res, rej) => {
     spawned.on("error", (error) => {
       log.error(`Task failed with message: ${error.message}.`);
-      rej();
+      rej(error);
     });
 
     spawned.stdout.on("data", (data) => {
-      log.info(data.toString());
+      log.git(data.toString());
     });
 
     spawned.on("exit", (code) => {
