@@ -8,14 +8,14 @@ export async function gitRebaseTask(args) {
 
   if (gRebaseIndex > -1) {
     if (args.length < 3 || validCommands.includes(args[gRebaseIndex + 1]) || validCommands.includes(args[gRebaseIndex + 2])) {
-      throw new Error("Rebase flag requires the target branchs names `gs -r target-branch origin-branch`");
+      throw new Error("Rebase flag requires the target branchs names `gs -r origin-branch target-branch`");
     }
 
     if (gRebaseIndex !== 2 && args.length > 3) {
       throw new Error("Cannot do anything these than rebase when rebase flag is setted up");
     }
 
-    const [target, origin] = branchs;
+    const [origin, target] = [args[gRebaseIndex + 1], args[gRebaseIndex + 2]];
 
     const goToTargetBranch = addTask("git", ["checkout", target]);
     const gitPull = addTask("git", ["pull"]);
