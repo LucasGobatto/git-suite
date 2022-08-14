@@ -10,5 +10,6 @@ export function help() {
   console.info("-force | -f\t\t\t\tgit push -f origin <branch>\tmust come with -push flag");
   console.info("-rest-head | -rs [<number>]\t\tgit reset HEAD~<number>\t\t[default] git reset HEAD~1");
   console.info("-r | -rebase origin-branch target-branch\tgit rebase target-branch");
+  console.info("--c | --s | --a\t\tgit add . && git rebase --[continue | skip | abort]");
   console.info();
 }
