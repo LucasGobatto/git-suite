@@ -29,6 +29,8 @@ export function gitCheckoutTaks(args) {
       throw new Error(`Invalid arguments: ${args.slice(2).join(", ")}. Checkout accepts only 2 args \`gs -cb branch-name\``);
     }
 
+    const branchName = args[gCheckoutIndex + 1];
+
     return addTask("git", ["checkout", "-b", branchName]);
   }
 }
