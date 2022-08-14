@@ -1,18 +1,18 @@
 export const extraCommands = ["--help"];
 export const validCommands = [
-  "-a",
-  "-add",
-  "-c",
-  "-commit",
-  "-p",
-  "-push",
-  "-f",
-  "-force",
-  "-rh",
-  "-reset-head",
-  "-r",
-  "-rebase",
-  "--help",
+  "-a", // 0
+  "-add", // 1
+  "-c", // 2
+  "-commit", // 3
+  "-p", // 4
+  "-push", // 5
+  "-f", // 6
+  "-force", // 7
+  "-rh", // 8
+  "-reset-head", // 9
+  "-r", // 10
+  "-rebase", // 11
+  "--help", // 12
 ];
 export const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 export const types = {

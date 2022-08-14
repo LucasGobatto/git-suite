@@ -4,7 +4,7 @@ import { log } from "../../log/log.js";
 import { validCommands } from "../constants.js";
 
 export async function gitRebaseTask(args) {
-  const gRebaseIndex = getIndex(8);
+  const gRebaseIndex = getIndex(10);
 
   if (gRebaseIndex > -1) {
     if (args.length < 3 || validCommands.includes(args[gRebaseIndex + 1]) || validCommands.includes(args[gRebaseIndex + 2])) {
