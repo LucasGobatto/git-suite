@@ -16,7 +16,9 @@ export const validCommands = [
   "-checkout", //13
   "-cb", // 14
   "-checkout-branch", //15
-  "--help", // 16
+  "--i", // 16
+  "--iterative", // 17
+  "--help", // 18
 ];
 export const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 export const types = {

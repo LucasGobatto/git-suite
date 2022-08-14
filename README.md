@@ -67,7 +67,7 @@ Not providing the branch name will push all local changes, including the changes
 
 **4. Git reset HEAD:** `gs -rh | -reset-head [<number>]` - runs `git reset HEAD~<number>`. By default, with remove 1 commit from the HEAD.
 
-**5. Git rebase:** `gs -r to-rebase-branch head-branch` - runs:
+**5. Git rebase:** `gs -r to-rebase-branch head-branch [-i]` - runs:
 
 ```sh
 $ git checkout head-branch
