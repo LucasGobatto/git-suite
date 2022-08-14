@@ -30,6 +30,8 @@ async function runner(args) {
     for (const task of tasks) {
       await exec(task);
     }
+
+    log.success("Git flow finished successfully!");
   } catch (error) {
     log.error(error.message);
   }

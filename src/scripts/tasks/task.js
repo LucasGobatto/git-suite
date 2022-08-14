@@ -20,9 +20,13 @@ export function exec(task) {
       log.git(data.toString());
     });
 
+    spawned.stderr.on("data", (data) => {
+      log.git(data.toString());
+    });
+
     spawned.on("exit", (code) => {
       if (code !== 0) {
-        rej(`Task exit with status ${code}.`);
+        rej(new Error(`Task exit with status ${code}.`));
       } else {
         res(code);
       }
