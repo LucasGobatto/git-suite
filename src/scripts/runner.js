@@ -24,13 +24,13 @@ async function runner(args) {
     const gitCheckout = gitCheckoutTaks(args);
     const gitAdd = gitAddTask(args);
     const gitCommit = gitCommitTask(args);
-    const gitPush = gitPushTask(args);
-    const gitPull = gitPullTask(args);
+    const gitPush = await gitPushTask(args);
+    const gitPull = await gitPullTask(args);
 
     const tasks = [...(gitAdd ?? []), gitCommit, gitPush, gitCheckout, gitPull].filter(Boolean);
 
     for (const task of tasks) {
-      await exec(await task);
+      await exec(task);
     }
 
     log.success("Git flow finished successfully!");
