@@ -5,3 +5,4 @@ export * from "./reset-head.task.js";
 export * from "./rebase.task.js";
 export * from "./task.js";
 export * from "./checkout.task.js";
+export * from "./pull.task.js";

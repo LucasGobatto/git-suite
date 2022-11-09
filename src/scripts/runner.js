@@ -1,6 +1,6 @@
 import { help } from "./help/help.js";
 import { verifyArgs } from "./decorators/verify-args.js";
-import { gitRebaseTask, gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks } from "./tasks/index.js";
+import { gitRebaseTask, gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask } from "./tasks/index.js";
 import { extraCommands } from "./constants.js";
 import { exec } from "./tasks/task.js";
 import { log } from "../log/log.js";
@@ -25,11 +25,12 @@ async function runner(args) {
     const gitAdd = gitAddTask(args);
     const gitCommit = gitCommitTask(args);
     const gitPush = gitPushTask(args);
+    const gitPull = gitPullTask(args);
 
-    const tasks = [...(gitAdd ?? []), gitCommit, gitPush, gitCheckout].filter(Boolean);
+    const tasks = [...(gitAdd ?? []), gitCommit, gitPush, gitCheckout, gitPull].filter(Boolean);
 
     for (const task of tasks) {
-      await exec(task);
+      await exec(await task);
     }
 
     log.success("Git flow finished successfully!");

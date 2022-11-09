@@ -16,8 +16,9 @@ export const validCommands = [
   "-checkout", //13
   "-cb", // 14
   "-checkout-branch", //15
-  "--help", // 16
-  "-cd", //17
+  "-cd", //16
+  "-pull", //17
+  "--help", // 18
 ];
 export const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 export const rebaseFlags = ["--c", "--continue", "--a", "--abort", "--s", "--skip"];

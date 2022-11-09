@@ -5,7 +5,7 @@ import { addTask } from "./task.js";
 export function gitCheckoutTaks(args) {
   const gCheckoutIndex = getIndex(12);
   const gCheckoutBranchIndex = getIndex(14);
-  const gCheckoutDevelopIndex = getIndex(17);
+  const gCheckoutDevelopIndex = getIndex(16, false);
 
   if (gCheckoutIndex > -1) {
     if (validCommands.includes(args[gCheckoutIndex + 1]) || !args[gCheckoutIndex + 1]) {
@@ -37,7 +37,7 @@ export function gitCheckoutTaks(args) {
 
   if (gCheckoutDevelopIndex > -1) {
     if (args.length != 1) {
-      throw new Error(`Invalid arguments: ${arfs.slice(1).join(", ")}. Checkout develop accepts only one argument \`gs -cd\`.`);
+      throw new Error(`Invalid arguments: ${args.slice(1).join(", ")}. Checkout develop accepts only one argument \`gs -cd\`.`);
     }
 
     return addTask("git", ["checkout", "develop"]);

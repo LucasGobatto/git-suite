@@ -1,15 +1,11 @@
 import { spawn } from "child_process";
 import { log } from "../../log/log.js";
 
-export function addTask(command, args) {
-  return { command, args };
-}
+export function getCurrentBranch() {
+  // git rev-parse --abbrev-ref HEAD
 
-export function exec(task) {
-  console.log(task);
-  log.info(`Running ${task.command} ${task.args.join(" ")}`);
-
-  const spawned = spawn(task.command, task.args, { shell: true });
+  const spawned = spawn("git rev-parse --abbrev-ref HEAD", { shell: true });
+  let currentBranch;
 
   return new Promise(async (res, rej) => {
     spawned.on("error", (error) => {
@@ -18,7 +14,7 @@ export function exec(task) {
     });
 
     spawned.stdout.on("data", (data) => {
-      log.git(data.toString());
+      currentBranch = data.toString();
     });
 
     spawned.stderr.on("data", (data) => {
@@ -29,7 +25,7 @@ export function exec(task) {
       if (code !== 0) {
         rej(new Error(`Task exit with status ${code}.`));
       } else {
-        res(code);
+        res(currentBranch);
       }
     });
   });
