@@ -25,7 +25,7 @@ export function getCurrentBranch() {
       if (code !== 0) {
         rej(new Error(`Task exit with status ${code}.`));
       } else {
-        res(currentBranch);
+        res(currentBranch.replace("\n", ""));
       }
     });
   });
