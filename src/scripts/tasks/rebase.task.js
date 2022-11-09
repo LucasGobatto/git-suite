@@ -35,9 +35,7 @@ export async function gitRebaseTask(args) {
 
   if (gRebaseFlagIndex > -1) {
     if (args.length > 1) {
-      throw new Error(
-        `Invalid param ${args.slice(1).join(", ")}. Choose one flag to continue rebase \`--a\`, \`--s\` or \`--c\` `
-      );
+      throw new Error(`Invalid param ${args.slice(1).join(", ")}. Choose one flag to continue rebase \`--a\`, \`--s\` or \`--c\` `);
     }
 
     const flag = mapFlag[args[gRebaseFlagIndex]];
