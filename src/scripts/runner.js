@@ -2,6 +2,7 @@ import { help } from "./help/help.js";
 import { verifyArgs } from "./decorators/verify-args.js";
 import { gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDevelop, gitRebaseTask } from "./tasks/index.js";
 import { extraCommands } from "./constants.js";
+import { setDefatultConflictEditor } from "./editor-config/set-default-conflict-editor.task.js";
 import { exec } from "./tasks/task.js";
 import { log } from "../log/log.js";
 
@@ -9,6 +10,11 @@ async function runner(args) {
   try {
     if (args[0] === extraCommands[0]) {
       help();
+      return;
+    }
+
+    if (args[0] === extraCommands[1]) {
+      setDefatultConflictEditor(args);
       return;
     }
 

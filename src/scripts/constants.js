@@ -1,4 +1,4 @@
-export const extraCommands = ["--help"];
+export const extraCommands = ["--help", "--editor-vsc"];
 export const validCommands = [
   "-a", // 0
   "-add", // 1
@@ -18,7 +18,6 @@ export const validCommands = [
   "-checkout-branch", //15
   "-cd", //16
   "-pull", //17
-  "--help", // 18
 ];
 export const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 export const rebaseFlags = ["--rc", "--continue", "--ra", "--abort", "--rs", "--skip"];

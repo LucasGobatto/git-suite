@@ -1,5 +1,5 @@
 import { log } from "../../log/log.js";
-import { validCommands, commitType, rebaseFlags } from "../constants.js";
+import { validCommands, commitType, rebaseFlags, extraCommands } from "../constants.js";
 
 export function verifyArgs(fn) {
   return function (args) {
@@ -9,7 +9,7 @@ export function verifyArgs(fn) {
     }
 
     const invalidParam = args.find(
-      (param) => param[0] === "-" && !validCommands.includes(param) && !commitType.includes(param) && !rebaseFlags.includes(param)
+      (param) => param[0] === "-" && !validCommands.includes(param) && !commitType.includes(param) && !rebaseFlags.includes(param) && !extraCommands.includes(param)
     );
 
     if (invalidParam) {
