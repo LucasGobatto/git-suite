@@ -1,6 +1,6 @@
 import { help } from "./help/help.js";
 import { verifyArgs } from "./decorators/verify-args.js";
-import { gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDevelop } from "./tasks/index.js";
+import { gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDevelop, gitRebaseTask } from "./tasks/index.js";
 import { extraCommands } from "./constants.js";
 import { exec } from "./tasks/task.js";
 import { log } from "../log/log.js";
@@ -11,6 +11,8 @@ async function runner(args) {
       help();
       return;
     }
+
+    await gitRebaseTask(args);
 
     const gitResetHead = gitRestHeadTask(args);
 
