@@ -11,7 +11,7 @@ export function gitCheckoutTaks(args) {
       throw new Error("Provide the branch name to checkout. `gs -c branch-name`");
     }
 
-    if (args.length !== 2) {
+    if (args.length < 2) {
       throw new Error(`Invalid arguments: ${args.slice(2).join(", ")}. Checkout accepts only 2 args \`gs -c branch-name\``);
     }
 
