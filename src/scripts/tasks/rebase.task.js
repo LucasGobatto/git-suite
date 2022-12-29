@@ -15,7 +15,7 @@ export async function gitRebaseTask(args) {
       throw new Error("Cannot do anything these than rebase when rebase flag is setted up");
     }
 
-    const [origin, head] = [args[gRebaseIndex + 1], args[gRebaseIndex + 2]];
+    const [head, origin] = [args[gRebaseIndex + 1], args[gRebaseIndex + 2]];
 
     const goToHeadBranch = addTask("git", ["checkout", head ?? defaultHeadBranch]);
     const gitPull = addTask("git", ["pull", head ?? defaultHeadBranch]);
