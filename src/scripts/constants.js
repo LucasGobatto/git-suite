@@ -18,8 +18,6 @@ export const validCommands = [
   "-checkout-branch", //15
   "-cd", //16
   "-pull", //17
-  "--help", // 18
-  "--editor-vsc", //19,
 ];
 export const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
 export const rebaseFlags = ["--rc", "--continue", "--ra", "--abort", "--rs", "--skip"];
