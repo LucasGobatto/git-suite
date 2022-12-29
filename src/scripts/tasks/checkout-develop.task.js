@@ -1,6 +1,6 @@
 import { log } from "../../log/log.js";
 import { getIndex } from "../utils/get-index.js";
-import { addTask } from "./task.js";
+import { addTask, exec } from "./task.js";
 
 export async function gitCheckoutDevelop(args) {
   const gCheckoutDevelopIndex = getIndex(16, false);
