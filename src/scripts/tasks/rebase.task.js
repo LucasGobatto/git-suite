@@ -7,7 +7,7 @@ import { getCurrentBranch } from "../utils/get-current-branch.js";
 export async function gitRebaseTask(args) {
   const gRebaseIndex = getIndex(10);
   const gRebaseFlagIndex = getRebaseFlagIndex();
-  const currentBranch = getCurrentBranch();
+  const currentBranch = await getCurrentBranch();
   const defaultHeadBranch = "develop";
 
   if (gRebaseIndex > -1) {
@@ -18,7 +18,7 @@ export async function gitRebaseTask(args) {
     const [head, origin] = [args[gRebaseIndex + 1], args[gRebaseIndex + 2]];
 
     const goToHeadBranch = addTask("git", ["checkout", head ?? defaultHeadBranch]);
-    const gitPull = addTask("git", ["pull", head ?? defaultHeadBranch]);
+    const gitPull = addTask("git", ["pull", "origin", head ?? defaultHeadBranch]);
     const goToCurrentBranch = addTask("git", ["checkout", origin ?? currentBranch]);
     const makeRebase = addTask("git", ["rebase", head ?? defaultHeadBranch]);
 
