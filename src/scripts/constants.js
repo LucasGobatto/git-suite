@@ -21,7 +21,7 @@ export const validCommands = [
   "--help", // 18
 ];
 export const commitType = ["--ft", "--fx", "--e", "--c", "--d"];
-export const rebaseFlags = ["--c", "--continue", "--a", "--abort", "--s", "--skip"];
+export const rebaseFlags = ["--rc", "--continue", "--ra", "--abort", "--rs", "--skip"];
 export const types = {
   [commitType[0]]: "feat",
   [commitType[1]]: "fix",
@@ -31,9 +31,9 @@ export const types = {
 };
 
 export const mapFlag = {
-  "--c": "--continue",
-  "--a": "--abort",
-  "--s": "--skip",
+  "--rc": "--continue",
+  "--ra": "--abort",
+  "--rs": "--skip",
   "--continue": "--continue",
   "--abort": "--abort",
   "--skip": "--skip",
