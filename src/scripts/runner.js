@@ -1,7 +1,6 @@
 import { help } from "./help/help.js";
 import { verifyArgs } from "./decorators/verify-args.js";
-// import { gitRebaseTask } from "./tasks/index.js";
-import { gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask } from "./tasks/index.js";
+import { gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDevelop } from "./tasks/index.js";
 import { extraCommands } from "./constants.js";
 import { exec } from "./tasks/task.js";
 import { log } from "../log/log.js";
@@ -13,15 +12,14 @@ async function runner(args) {
       return;
     }
 
-    // todo - fix rebase script
-    // await gitRebaseTask(args);
-
     const gitResetHead = gitRestHeadTask(args);
 
     if (gitResetHead) {
       await exec(gitResetHead);
       return;
     }
+
+    await gitCheckoutDevelop(args);
 
     const gitCheckout = gitCheckoutTaks(args);
     const gitAdd = gitAddTask(args);
