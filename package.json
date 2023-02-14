@@ -1,5 +1,5 @@
 {
-  "name": "git-commit",
+  "name": "git-suite",
   "version": "0.6.0",
   "description": "npm package to simplify git commit flow",
   "main": "src/index.js",
@@ -8,7 +8,7 @@
     "test": "node ./src/index.js"
   },
   "bin": {
-    "gs": "./src/index.js"
+    "gs": "src/index.js"
   },
   "dependencies": {
     "chalk": "5.0.1"
@@ -16,5 +16,21 @@
   "engines": {
     "node": "16.14.2",
     "npm": ">=7.0.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasGobatto/git-suite.git"
+  },
+  "keywords": [
+    "git",
+    "gitflow",
+    "cli"
+  ],
+  "author": "LucasGobatto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasGobatto/git-suite/issues"
+  },
+  "homepage": "https://github.com/LucasGobatto/git-suite#readme"
 }
