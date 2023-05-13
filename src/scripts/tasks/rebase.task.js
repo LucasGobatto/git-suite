@@ -3,12 +3,13 @@ import { getIndex, getRebaseFlagIndex } from "../utils/get-index.js";
 import { log } from "../../log/log.js";
 import { mapFlag } from "../constants.js";
 import { getCurrentBranch } from "../utils/get-current-branch.js";
+import { getDefaultBranch } from "../utils/get-default-branch.js";
 
 export async function gitRebaseTask(args) {
   const gRebaseIndex = getIndex(10);
   const gRebaseFlagIndex = getRebaseFlagIndex();
   const currentBranch = await getCurrentBranch();
-  const defaultHeadBranch = "develop";
+  const defaultHeadBranch = await getDefaultBranch();
 
   if (gRebaseIndex > -1) {
     if (gRebaseIndex !== 2 && args.length > 3) {
@@ -34,7 +35,9 @@ export async function gitRebaseTask(args) {
 
   if (gRebaseFlagIndex > -1) {
     if (args.length > 1) {
-      throw new Error(`Invalid param ${args.slice(1).join(", ")}. Choose one flag to continue rebase \`--ra\`, \`--rs\` or \`--rc\` `);
+      throw new Error(
+        `Invalid param ${args.slice(1).join(", ")}. Choose one flag to continue rebase \`--ra\`, \`--rs\` or \`--rc\` `
+      );
     }
 
     const flag = mapFlag[args[gRebaseFlagIndex]];
