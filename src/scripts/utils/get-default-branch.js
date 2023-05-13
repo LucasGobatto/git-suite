@@ -3,7 +3,6 @@ import { log } from "../../log/log.js";
 
 export function getDefaultBranch() {
   // git remote show origin | grep 'HEAD branch' | cut -d' ' -f5
-  console.log("here");
   const spawned = spawn("git remote show origin | grep 'HEAD branch' | cut -d' ' -f5", { shell: true });
   let defaultBranch;
 
@@ -14,7 +13,6 @@ export function getDefaultBranch() {
     });
 
     spawned.stdout.on("data", (data) => {
-      console.log(data);
       defaultBranch = data.toString();
     });
 
@@ -26,7 +24,6 @@ export function getDefaultBranch() {
       if (code !== 0) {
         rej(new Error(`Task exit with status ${code}.`));
       } else {
-        console.log("exit", defaultBranch);
         res(defaultBranch.replace("\n", ""));
       }
     });

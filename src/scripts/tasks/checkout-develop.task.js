@@ -5,7 +5,6 @@ import { addTask, exec } from "./task.js";
 
 export async function gitCheckoutDefaultBranch(args) {
   const gCheckoutDevelopIndex = getIndex(16, false);
-  const defaultBranch = await getDefaultBranch();
 
   if (gCheckoutDevelopIndex > -1) {
     if (args.length != 1) {
@@ -15,6 +14,8 @@ export async function gitCheckoutDefaultBranch(args) {
           .join(", ")}. Checkout ${defaultBranch} accepts only one argument \`gs -cd\`.`
       );
     }
+
+    const defaultBranch = await getDefaultBranch();
 
     try {
       const checkoutTask = addTask("git", ["checkout", defaultBranch]);
