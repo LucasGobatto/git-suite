@@ -1,6 +1,6 @@
 import { log } from '#log';
 import { getExtraCommandIndex } from '#utils/get-index';
-import { addTask } from '../tasks/task.js';
+import { addTask } from '#tasks';
 
 export const setDefatultConflictEditor = (args) => {
   const editorFlag = getExtraCommandIndex(1);

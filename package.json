@@ -35,6 +35,7 @@
   "homepage": "https://github.com/LucasGobatto/git-suite#readme",
   "imports": {
     "#log": "./src/log/log.js",
-    "#utils/*": "./src/scripts/utils/*.js"
+    "#utils/*": "./src/scripts/utils/*.js",
+    "#tasks": "./src/scripts/tasks/index.js"
   }
 }

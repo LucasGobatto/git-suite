@@ -1,6 +1,6 @@
 import { log } from '#log';
 import { mapFlagToGitCommand, mapExtraCommands } from './map-tasks.js';
-import { exec } from './tasks/index.js';
+import { exec } from '#tasks';
 
 export async function runGitTask(currentArg, allArgs) {
   const gitTask = mapFlagToGitCommand[currentArg];

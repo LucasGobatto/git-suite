@@ -11,7 +11,7 @@ import {
   gitPushTask,
   gitRebaseTask,
   gitResetHeadTask,
-} from './tasks/index.js';
+} from '#tasks';
 
 export const mapFlagToGitCommand = {
   [validCommands[0]]: gitAddTask,
