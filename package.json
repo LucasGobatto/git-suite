@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/LucasGobatto/git-suite#readme",
   "import": {
-    "#logger":"./src/log/log.js",
+    "#logger": "./src/log/log.js",
     "#utils/*": "./src/utils/*.js"
   }
 }
