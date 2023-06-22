@@ -1,6 +1,6 @@
 import { help } from './help/help.js';
 import { verifyArgs } from './decorators/verify-args.js';
-import { gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDefaultBranch, gitRebaseTask } from './tasks/index.js';
+import { gitAddTask, gitCommitTask, gitPushTask, gitResetHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDefaultBranch, gitRebaseTask } from './tasks/index.js';
 import { extraCommands } from './constants.js';
 import { setDefatultConflictEditor } from './editor-config/set-default-conflict-editor.task.js';
 import { exec } from './tasks/task.js';
@@ -18,9 +18,9 @@ async function runner(args) {
       return;
     }
 
-    await gitRebaseTask(args);
+    const rebaseFlow = await gitRebaseTask(args);
 
-    const gitResetHead = gitRestHeadTask(args);
+    const gitResetHead = gitResetHeadTask(args);
 
     if (gitResetHead) {
       await exec(gitResetHead);

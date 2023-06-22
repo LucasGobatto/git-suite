@@ -1,5 +1,5 @@
 import { log } from '#log';
-import { getExtraCommandIndex } from '#utils/get-index.js';
+import { getExtraCommandIndex } from '#utils/get-index';
 import { addTask, exec } from '../tasks/task.js';
 
 export const setDefatultConflictEditor = async (args) => {

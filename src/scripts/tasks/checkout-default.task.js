@@ -1,6 +1,6 @@
 import { log } from '#log';
-import { getIndex } from '#utils/get-index.js';
-import { getDefaultBranch } from '#utils/get-default-branch.js';
+import { getIndex } from '#utils/get-index';
+import { getDefaultBranch } from '#utils/get-default-branch';
 import { addTask, exec } from './task.js';
 
 export async function gitCheckoutDefaultBranch(args) {
@@ -8,7 +8,11 @@ export async function gitCheckoutDefaultBranch(args) {
 
   if (gCheckoutDevelopIndex > -1) {
     if (args.length != 1) {
-      throw new Error(`Invalid arguments: ${args.slice(1).join(', ')}. Checkout ${defaultBranch} accepts only one argument \`gs -cd\`.`);
+      throw new Error(
+        `Invalid arguments: ${args
+          .slice(1)
+          .join(', ')}. Checkout ${defaultBranch} accepts only one argument \`gs -cd\`.`,
+      );
     }
 
     const defaultBranch = await getDefaultBranch();
