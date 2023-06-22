@@ -1,4 +1,4 @@
-import { getIndex } from '#utils/get-index.js';
+import { getIndex } from '#utils/get-index';
 import { commitType, validCommands, types } from '../constants.js';
 import { addTask } from './task.js';
 

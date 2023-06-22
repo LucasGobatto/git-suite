@@ -6,7 +6,7 @@ export const validCommands = [
   '-message', // 3
   '-p', // 4
   '-push', // 5
-  '-f', // 6
+  '-pf', // 6
   '-force', // 7
   '-rh', // 8
   '-reset-head', // 9

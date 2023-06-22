@@ -1,5 +1,5 @@
 import { validCommands } from '../constants.js';
-import { getIndex } from '#utils/get-index.js';
+import { getIndex } from '#utils/get-index';
 import { addTask } from './task.js';
 
 export function gitAddTask(args) {

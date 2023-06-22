@@ -33,8 +33,9 @@
     "url": "https://github.com/LucasGobatto/git-suite/issues"
   },
   "homepage": "https://github.com/LucasGobatto/git-suite#readme",
-  "import": {
-    "#logger": "./src/log/log.js",
-    "#utils/*": "./src/utils/*.js"
+  "imports": {
+    "#log": "./src/log/log.js",
+    "#utils/*": "./src/scripts/utils/*.js",
+    "#tasks": "./src/scripts/tasks/index.js"
   }
 }
