@@ -1,4 +1,4 @@
-import { extraCommands, rebaseFlags, validCommands } from "../constants.js";
+import { extraCommands, rebaseFlags, validCommands } from '../constants.js';
 
 export function getIndex(index, haveTooOptions = true) {
   const args = process.argv.slice(2);
