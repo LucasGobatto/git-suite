@@ -19,15 +19,6 @@ export async function gitRebaseTask(args) {
     const makeRebase = addTask('git', ['rebase', head ?? defaultHeadBranch]);
 
     return [goToHeadBranch, gitPull, goToCurrentBranch, makeRebase];
-
-    // await exec(goToHeadBranch);
-    // await exec(gitPull);
-    // await exec(goToCurrentBranch);
-    // await exec(makeRebase);
-
-    // log.info('Run `gs -p -f` to push or `gs --rc` to continue rebase.\n');
-    // log.success('Git flow finished successfully!');
-    // process.exit(0);
   }
 
   if (gRebaseFlagIndex > -1) {
@@ -43,12 +34,7 @@ export async function gitRebaseTask(args) {
       const gitAdd = addTask('git', ['add', '.']);
       const gitRebase = addTask('git', ['rebase', flag]);
 
-      // await exec(gitAdd);
-      // await exec(gitRebase);
-
       return [gitAdd, gitRebase];
-      // log.success('Git flow finished successfully!');
-      // process.exit(0);
     } else {
       throw new Error(`Unexpected error. Received args: ${args.join(', ')}`);
     }

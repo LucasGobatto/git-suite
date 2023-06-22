@@ -1,50 +1,23 @@
-import { help } from './help/help.js';
-import { verifyArgs } from './decorators/verify-args.js';
-import { gitAddTask, gitCommitTask, gitPushTask, gitResetHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDefaultBranch, gitRebaseTask } from './tasks/index.js';
-import { extraCommands } from './constants.js';
-import { setDefatultConflictEditor } from './editor-config/set-default-conflict-editor.task.js';
-import { exec } from './tasks/task.js';
 import { log } from '#log';
+import { extraCommands } from './constants.js';
+import { verifyArgs } from './decorators/verify-args.js';
+import { runExtraCommands, runGitTask } from './run-tasks.js';
 
 async function runner(args) {
-  try {
-    if (args[0] === extraCommands[0]) {
-      help();
-      return;
+  for (const arg of args) {
+    const isOptionalFlag = arg.indexOf('--') === 0;
+    const isFlag = !isOptionalFlag && arg.indexOf('-') === 0;
+
+    if (isOptionalFlag && extraCommands.includes(arg)) {
+      await runExtraCommands(arg, args);
     }
 
-    if (args[0] === extraCommands[1]) {
-      setDefatultConflictEditor(args);
-      return;
+    if (isFlag) {
+      await runGitTask(arg, args);
     }
-
-    const rebaseFlow = await gitRebaseTask(args);
-
-    const gitResetHead = gitResetHeadTask(args);
-
-    if (gitResetHead) {
-      await exec(gitResetHead);
-      return;
-    }
-
-    await gitCheckoutDefaultBranch(args);
-
-    const gitCheckout = gitCheckoutTaks(args);
-    const gitAdd = gitAddTask(args);
-    const gitCommit = gitCommitTask(args);
-    const gitPush = await gitPushTask(args);
-    const gitPull = await gitPullTask(args);
-
-    const tasks = [...(gitAdd ?? []), gitCommit, gitPush, gitCheckout, gitPull].filter(Boolean);
-
-    for (const task of tasks) {
-      await exec(task);
-    }
-
-    log.success('Git flow finished successfully!');
-  } catch (error) {
-    log.error(error.message);
   }
+
+  log.success('Git flow finished successfully!');
 }
 
 export default verifyArgs(runner);
