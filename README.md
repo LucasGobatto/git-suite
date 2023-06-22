@@ -16,7 +16,7 @@ Runs the command
 $ gs -a -m "initial commit" --ft -p main -f
 ```
 
-to get the flowing:
+to get the following:
 
 ```sh
 $ git add .
@@ -28,17 +28,16 @@ Simple as that!
 
 # How to use
 
-1. Clone this repo:
+1. Install using npm:
 
 ```sh
-$ git clone https://github.com/LucasGobatto/git-suite
+$ npm i git-suite
 ```
 
-2. On folder `/git-suite` run `nvm use` and `npm install`;
 3. Install globally:
 
 ```sh
-$ npm install -g
+$ npm install -g git-suite
 ```
 
 Done! To see the list of all valid commands on terminal, run:
@@ -59,25 +58,42 @@ $ gs --help
 - `--e` --> `"enhance: message"`;
 - `--d` --> `"docs: message"`;
 
-**3. Git push:** `gs -p | -push [<branch-name>] [-f | -force]` - runs `git push origin <branch-name>`. The force flag is optional;
+**3. Git push:** `gs -p | -push [<branch-name>] [-f | -force]` - runs `git push origin <branch-name>`. The force flag and branch-name is optional;
 
-### Warning!
-
-Not providing the branch name will push all local changes, including the changes from others branchs.
+> ### ⚠️ Warning!
+>
+> Not providing the branch name will push the changes from the current branch.
 
 **4. Git reset HEAD:** `gs -rh | -reset-head [<number>]` - runs `git reset HEAD~<number>`. By default, with remove 1 commit from the HEAD.
 
-**5. Git rebase:** `gs -r to-rebase-branch head-branch` - runs:
+**5. Git rebase:** `gs -r [head-branch] [branch-to-rebase]` - runs:
 
-```sh
-$ git checkout head-branch
-$ git pull
-$ git checkout to-rebase-branch
-$ git rebase to-rebase-branch
-```
+- Example 1: Rebase current branch (i.e. `docs/readme`) into default head branch (i.e. `main`):
 
-Runs the rebase process. It can be triggered within any branch, precisely because it makes the checkouts on the mentioned branchs, ensuring that the rebase process is performed to the correct ones.
+  ```sh
+    $ git -r
+
+    git checkout main
+    git pull origin main
+    git checkout docs/readme
+    git rebase main
+  ```
+
+- Example 2: Rebase `develop` into `main` from any other branch:
+
+  ```sh
+  $ gs -r main develop
+
+  git checkout main
+  git pull origin main
+  git checkout develop
+  git rebase main
+  ```
+
+Runs the rebase process. It will update the head branch automatically for you and you dont need to worries aboute the update status of your head branch! Besides, it can be triggered from any branch, precisely because it makes the checkouts on the mentioned branchs, ensuring that the rebase process is performed to the correct ones.
 
 Note: If any conflicts occur in the rebase process, it will stop to resolve the conflicts. After rebase, run `gs -p -f` to push the current branch.
 
 **6. Git checkout:** `gs -c <branch-name>` - runs `git checkout branch-name`. Change to "brach-name" branch. It is allowed to create a new branch running `gs -cb branch-name`.
+
+**7. Git checkout default:** `gs -cd` - runs `git checkout <default-head- branch>`. It will swich the current branch to the default head branch (i.e. `main` or `master`)
