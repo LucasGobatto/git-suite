@@ -1,6 +1,6 @@
 {
   "name": "git-suite",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "npm package to simplify git commit flow",
   "main": "src/index.js",
   "type": "module",
