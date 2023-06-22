@@ -1,6 +1,6 @@
-import { validCommands } from "../constants.js";
-import { addTask } from "./task.js";
-import { getIndex } from "../utils/get-index.js";
+import { validCommands } from '../constants.js';
+import { addTask } from './task.js';
+import { getIndex } from '#utils/get-index.js';
 
 export function gitRestHeadTask(args) {
   const gResetHeadIndex = getIndex(8);
@@ -12,6 +12,6 @@ export function gitRestHeadTask(args) {
 
     const gResetHeadParam = args[gResetHeadIndex + 1] ?? 1;
 
-    return addTask("git", ["reset", `HEAD~${gResetHeadParam}`]);
+    return addTask('git', ['reset', `HEAD~${gResetHeadParam}`]);
   }
 }

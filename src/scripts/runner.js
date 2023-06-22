@@ -1,19 +1,10 @@
-import { help } from "./help/help.js";
-import { verifyArgs } from "./decorators/verify-args.js";
-import {
-  gitAddTask,
-  gitCommitTask,
-  gitPushTask,
-  gitRestHeadTask,
-  gitCheckoutTaks,
-  gitPullTask,
-  gitCheckoutDefaultBranch,
-  gitRebaseTask,
-} from "./tasks/index.js";
-import { extraCommands } from "./constants.js";
-import { setDefatultConflictEditor } from "./editor-config/set-default-conflict-editor.task.js";
-import { exec } from "./tasks/task.js";
-import { log } from "../log/log.js";
+import { help } from './help/help.js';
+import { verifyArgs } from './decorators/verify-args.js';
+import { gitAddTask, gitCommitTask, gitPushTask, gitRestHeadTask, gitCheckoutTaks, gitPullTask, gitCheckoutDefaultBranch, gitRebaseTask } from './tasks/index.js';
+import { extraCommands } from './constants.js';
+import { setDefatultConflictEditor } from './editor-config/set-default-conflict-editor.task.js';
+import { exec } from './tasks/task.js';
+import { log } from '#log';
 
 async function runner(args) {
   try {
@@ -50,7 +41,7 @@ async function runner(args) {
       await exec(task);
     }
 
-    log.success("Git flow finished successfully!");
+    log.success('Git flow finished successfully!');
   } catch (error) {
     log.error(error.message);
   }

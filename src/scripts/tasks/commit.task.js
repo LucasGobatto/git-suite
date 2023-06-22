@@ -1,6 +1,6 @@
-import { getIndex } from "../utils/get-index.js";
-import { commitType, validCommands, types } from "../constants.js";
-import { addTask } from "./task.js";
+import { getIndex } from '#utils/get-index.js';
+import { commitType, validCommands, types } from '../constants.js';
+import { addTask } from './task.js';
 
 export function gitCommitTask(args) {
   const gCommitIndex = getIndex(2);
@@ -18,6 +18,6 @@ export function gitCommitTask(args) {
     const gitCommitParam = args[gCommitIndex + 1];
     const gCommitType = gCommitTypeIndex > -1 && types[args[gCommitTypeIndex]];
 
-    return addTask("git", ["commit", `-m "${gCommitType ? `${gCommitType}: ${gitCommitParam}` : gitCommitParam}"`]);
+    return addTask('git', ['commit', `-m "${gCommitType ? `${gCommitType}: ${gitCommitParam}` : gitCommitParam}"`]);
   }
 }
