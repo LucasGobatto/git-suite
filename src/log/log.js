@@ -8,7 +8,7 @@ const LOG_LEVEL = {
 };
 
 const logIfLevelAllowed = (level, fn) => {
-  const checkLevel = (level) => LOG_LEVEL[process.env.LOG_LEVEL].includes(level);
+  const checkLevel = (level) => (LOG_LEVEL[process.env.LOG_LEVEL] ?? LOG_LEVEL.info).includes(level);
 
   return function (...value) {
     if (!checkLevel(level)) return;
