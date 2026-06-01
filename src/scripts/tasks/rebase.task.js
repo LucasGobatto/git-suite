@@ -1,7 +1,7 @@
 import { getCurrentBranch } from '#utils/get-current-branch';
 import { getDefaultBranch } from '#utils/get-default-branch';
 import { getIndex } from '#utils/get-index';
-import { REBASE_FLAGS, VALID_REBASE_FLAGS, VALID_COMMANDS } from '../constants.js';
+import { REBASE_FLAGS, VALID_COMMAND_TYPES, VALID_COMMANDS, VALID_REBASE_FLAGS } from '../constants.js';
 import { addTask } from './task.js';
 
 export async function gitRebaseTask(args, rebaseFlag) {
@@ -28,15 +28,21 @@ export async function gitRebaseTask(args, rebaseFlag) {
     return [goToHeadBranch, gitPull, goToCurrentBranch, makeRebase];
   }
 
-  if (args.length > 1)
+  const hasAddFlag = args.some((arg) => VALID_COMMANDS[VALID_COMMAND_TYPES.ADD].includes(arg));
+
+  if (args.length > 1 && !hasAddFlag)
     throw new Error(
       `Invalid param ${args.slice(1).join(', ')}. Choose one flag to continue rebase \`-ra\`, \`-rs\` or \`-rc\` `,
     );
 
-  const flag = VALID_REBASE_FLAGS[rebaseFlag][0];
-
-  const gitAdd = addTask('git', ['add', '.']);
+  const flag = VALID_REBASE_FLAGS[rebaseFlag][1];
+  
   const gitRebase = addTask('git', ['rebase', flag]);
 
-  return [gitAdd, gitRebase];
+  if (hasAddFlag) {
+    const gitAdd = addTask('git', ['add', '.']);
+    return [gitAdd, gitRebase];
+  }
+
+  return gitRebase;
 }
