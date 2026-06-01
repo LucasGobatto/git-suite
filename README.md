@@ -1,99 +1,209 @@
-# Git-Suite
+# git-suite
 
-A command line application to simplify the git workflow on committing, pushing and others commands.
-
-# Prerequisites
-
-Install Node Package Manager [npm](https://www.npmjs.com/) and Node Version Manager [nvm](https://github.com/nvm-sh/nvm/blob/master/README.md#installing-and-updating). Have [git](https://git-scm.com/) installed and [configured](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) on your machine.
-
-# Info
-
-**Exemple**
-
-Runs the command
+A CLI tool that chains common git operations into a single command. Instead of running `git add`, `git commit`, and `git push` separately, run one `gs` command with the flags you need.
 
 ```sh
-$ gs -a -m "initial commit" --ft -p main -f
+gs -a -m "initial commit" --ft -p main -f
 ```
 
-to get the following:
+Runs:
 
 ```sh
-$ git add .
-$ git commit -m "feat: initial commit"
-$ git push -f origin main
+git add .
+git commit -m "feat: initial commit"
+git push -f origin main
 ```
 
-Simple as that!
+## Requirements
 
-# How to use
+- [Node.js](https://nodejs.org/) >= 16.14.2
+- [npm](https://www.npmjs.com/) >= 7
+- [Git](https://git-scm.com/) installed and configured
 
-1. Install using npm:
+## Installation
+
+Install globally to use the `gs` command anywhere:
 
 ```sh
-$ npm i git-suite
+npm install -g git-suite
 ```
 
-3. Install globally:
+Or run without a global install:
 
 ```sh
-$ npm install -g git-suite
+npx git-suite --help
 ```
 
-Done! To see the list of all valid commands on terminal, run:
+Verify the installation:
 
 ```sh
-$ gs --help
+gs --help
 ```
 
-## Valid Commands
+## Quick start
 
-**1. Git add:** `gs -a | -add [<file>,<file>]` or - runs `git add .` by default. Specify files to add concatenating the paths with a comma, like `gs -a path/to/file1.js,path/to/file2.js`;
+Stage all changes, commit with a conventional prefix, and push to the current branch:
 
-**2. Git commit:** `gs -m | -message "message" [--ft | --fx | --c | --e]` - runs `git commit -m "message"`. If the commit type flag is specified, the final commit message will be:
+```sh
+gs -a -m "update readme" --fx
+gs -p
+```
 
-- `--ft` --> `"feat: message"`;
-- `--fx` --> `"fix: message"`;
-- `--c` --> `"chore: message"`;
-- `--e` --> `"enhance: message"`;
-- `--d` --> `"docs: message"`;
+Stage specific files and push to a branch:
 
-**3. Git push:** `gs -p | -push [<branch-name>] [-f | -force]` - runs `git push origin <branch-name>`. The force flag and branch-name is optional;
+```sh
+gs -a src/index.js,src/utils.js -m "fix login" --fx -p main
+```
 
-> ### ⚠️ Warning!
->
-> Not providing the branch name will push the changes from the current branch.
+## Usage
 
-**4. Git reset HEAD:** `gs -rh | -reset-head [<number>]` - runs `git reset HEAD~<number>`. By default, with remove 1 commit from the HEAD.
+```sh
+gs [options]
+```
 
-**5. Git rebase:** `gs -r [head-branch] [branch-to-rebase]` - runs:
+Pass one or more flags in a single invocation. Flags are processed in order, so you can combine add, commit, push, and other operations in one line.
 
-- Example 1: Rebase current branch (i.e. `docs/readme`) into default head branch (i.e. `main`):
+Run `gs --help` at any time for the full list of available flags.
 
-  ```sh
-    $ git -r
+## Commands
 
-    git checkout main
-    git pull origin main
-    git checkout docs/readme
-    git rebase main
-  ```
+### General
 
-- Example 2: Rebase `develop` into `main` from any other branch:
+| Flag | Description |
+| --- | --- |
+| `--help` | Show help |
+| `--editor-vsc` | Set VS Code as the default git conflict editor |
 
-  ```sh
-  $ gs -r main develop
+### Git commands
 
-  git checkout main
-  git pull origin main
-  git checkout develop
-  git rebase main
-  ```
+| Flag | Description |
+| --- | --- |
+| `-a`, `--add [files]` | Stage files. Defaults to `git add .`. Separate multiple files with commas: `-a file1.js,file2.js` |
+| `-m`, `--message <message>` | Commit with a message |
+| `-c`, `--checkout <branch>` | Switch to a branch |
+| `-cb`, `--checkout-branch <branch>` | Create and switch to a new branch |
+| `-cd` | Checkout and pull the repository default branch |
+| `-pl`, `--pull [branch]` | Pull from origin. Defaults to the current branch |
+| `-p`, `--push [branch]` | Push to origin. Defaults to the current branch |
+| `-f`, `--force` | Force push. Must be used with `-p` or `--push` |
+| `-rh`, `--reset-head [n]` | Reset to `HEAD~n`. Defaults to `1` |
+| `-r`, `--rebase [head] [target]` | Rebase `target` onto `head`. Defaults to the default branch and the current branch |
 
-Runs the rebase process. It will update the head branch automatically for you and you dont need to worries aboute the update status of your head branch! Besides, it can be triggered from any branch, precisely because it makes the checkouts on the mentioned branchs, ensuring that the rebase process is performed to the correct ones.
+### Commit message prefixes
 
-Note: If any conflicts occur in the rebase process, it will stop to resolve the conflicts. After rebase, run `gs -p -f` to push the current branch.
+Use with `-m` or `--message` to prefix the commit message with a conventional commit type:
 
-**6. Git checkout:** `gs -c <branch-name>` - runs `git checkout branch-name`. Change to "brach-name" branch. It is allowed to create a new branch running `gs -cb branch-name`.
+| Flag | Prefix |
+| --- | --- |
+| `--ft` | `feat:` |
+| `--fx` | `fix:` |
+| `--e` | `enhance:` |
+| `--c` | `chore:` |
+| `--d` | `docs:` |
 
-**7. Git checkout default:** `gs -cd` - runs `git checkout <default-head- branch>`. It will swich the current branch to the default head branch (i.e. `main` or `master`)
+Example:
+
+```sh
+gs -m "add dark mode toggle" --ft
+# git commit -m "feat: add dark mode toggle"
+```
+
+### Rebase options
+
+Use after resolving conflicts during an interactive rebase:
+
+| Flag | Description |
+| --- | --- |
+| `-rc`, `--continue` | Continue the rebase |
+| `-ra`, `--abort` | Abort the rebase |
+| `-rs`, `--skip` | Skip the current rebase commit |
+
+You can optionally stage changes before continuing:
+
+```sh
+gs -a -rc
+```
+
+## Examples
+
+**Full commit and push flow**
+
+```sh
+gs -a -m "initial commit" --ft -p main -f
+```
+
+**Rebase the current branch onto the default branch**
+
+From any branch, `gs -r` checks out the default branch, pulls latest, returns to your branch, and rebases:
+
+```sh
+gs -r
+```
+
+**Rebase one branch onto another**
+
+```sh
+gs -r main develop
+```
+
+Equivalent to:
+
+```sh
+git checkout main
+git pull origin main
+git checkout develop
+git rebase main
+```
+
+**Switch to the default branch and pull latest**
+
+```sh
+gs -cd
+```
+
+**Undo the last commit**
+
+```sh
+gs -rh
+```
+
+**Continue a rebase after fixing conflicts**
+
+```sh
+gs -a -rc
+gs -p -f
+```
+
+## Configuration
+
+Set the log verbosity with the `LOG_LEVEL` environment variable:
+
+| Value | Output |
+| --- | --- |
+| `debug` | All logs including debug output |
+| `info` | Info, success, error, and git output (default) |
+| `success` | Success, error, and git output |
+| `error` | Errors and git output only |
+
+Example:
+
+```sh
+LOG_LEVEL=debug gs -a -m "test commit"
+```
+
+## Notes
+
+- The default branch is detected automatically from `git remote show origin` (usually `main` or `master`).
+- When no branch is provided for push or pull, the current branch is used.
+- Rebase may stop if conflicts occur. Resolve them, then use `-rc`, `-ra`, or `-rs` to continue, abort, or skip.
+- Force push (`-f`) rewrites remote history. Use it only when you intend to.
+
+## License
+
+ISC
+
+## Links
+
+- [npm package](https://www.npmjs.com/package/git-suite)
+- [GitHub repository](https://github.com/LucasGobatto/git-suite)
+- [Report an issue](https://github.com/LucasGobatto/git-suite/issues)
