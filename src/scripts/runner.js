@@ -4,20 +4,26 @@ import { verifyArgs } from './decorators/verify-args.js';
 import { runNonGitTask, runGitTask } from './run-tasks.js';
 
 async function runner(args) {
-  for (const arg of args) {
-    const isFlag = arg.indexOf('-') === 0;
-
-    if (!isFlag) continue;
-
-    if (Object.values(NON_GIT_COMMANDS).flat().includes(arg)) {
-      await runNonGitTask(arg, args);
-      continue;
+  try {
+    for (const arg of args) {
+      const isFlag = arg.indexOf('-') === 0;
+  
+      if (!isFlag) continue;
+  
+      if (Object.values(NON_GIT_COMMANDS).flat().includes(arg)) {
+        await runNonGitTask(arg, args);
+        continue;
+      }
+  
+      await runGitTask(arg, args);
     }
-
-    await runGitTask(arg, args);
+  
+    log.success('Git flow finished successfully!');
+  } catch (error) {
+    log.error(error.message);
+    log.debug('Error stack:', error.stack);
+    process.exit(1);
   }
-
-  log.success('Git flow finished successfully!');
 }
 
 export default verifyArgs(runner);
