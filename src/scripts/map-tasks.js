@@ -1,9 +1,7 @@
-import { extraCommands, validCommands } from './constants.js';
-import { help, setDefatultConflictEditor } from './extra-tasks/index.js';
 import {
   gitAddTask,
   gitCheckoutDefaultBranch,
-  gitCheckoutTaks,
+  gitCheckoutTask,
   gitCommitTask,
   gitCreateBranch,
   gitPullTask,
@@ -12,29 +10,24 @@ import {
   gitRebaseTask,
   gitResetHeadTask,
 } from '#tasks';
+import { VALID_COMMAND_TYPES, REBASE_FLAGS } from './constants.js';
+import { help, setDefaultConflictEditorTask } from './extra-tasks/index.js';
 
-export const mapFlagToGitCommand = {
-  [validCommands[0]]: gitAddTask,
-  [validCommands[1]]: gitAddTask,
-  [validCommands[2]]: gitCommitTask,
-  [validCommands[3]]: gitCommitTask,
-  [validCommands[4]]: gitPushTask,
-  [validCommands[5]]: gitPushTask,
-  [validCommands[6]]: gitPushForceTask,
-  [validCommands[7]]: gitPushForceTask,
-  [validCommands[8]]: gitResetHeadTask,
-  [validCommands[9]]: gitResetHeadTask,
-  [validCommands[10]]: gitRebaseTask,
-  [validCommands[11]]: gitRebaseTask,
-  [validCommands[12]]: gitCheckoutTaks,
-  [validCommands[13]]: gitCheckoutTaks,
-  [validCommands[14]]: gitCreateBranch,
-  [validCommands[15]]: gitCreateBranch,
-  [validCommands[16]]: gitCheckoutDefaultBranch,
-  [validCommands[17]]: gitPullTask,
-};
+export const mapCommandTypeToTask = {
+  [VALID_COMMAND_TYPES.ADD]: gitAddTask,
+  [VALID_COMMAND_TYPES.MESSAGE]: gitCommitTask,
+  [VALID_COMMAND_TYPES.PUSH]: gitPushTask,
+  [VALID_COMMAND_TYPES.FORCE]: gitPushForceTask,
+  [VALID_COMMAND_TYPES.RESET_HEAD]: gitResetHeadTask,
+  [VALID_COMMAND_TYPES.CHECKOUT]: gitCheckoutTask,
+  [VALID_COMMAND_TYPES.CREATE_BRANCH]: gitCreateBranch,
+  [VALID_COMMAND_TYPES.CHECKOUT_DEFAULT]: gitCheckoutDefaultBranch,
+  [VALID_COMMAND_TYPES.PULL]: gitPullTask,
+  [VALID_COMMAND_TYPES.HELP]: help,
+  [VALID_COMMAND_TYPES.EDITOR_VSC]: setDefaultConflictEditorTask,
 
-export const mapExtraCommands = {
-  [extraCommands[0]]: help,
-  [extraCommands[1]]: setDefatultConflictEditor,
+  [REBASE_FLAGS.REBASE]: (args) => gitRebaseTask(args, REBASE_FLAGS.REBASE),
+  [REBASE_FLAGS.CONTINUE]: (args) => gitRebaseTask(args, REBASE_FLAGS.CONTINUE),
+  [REBASE_FLAGS.ABORT]: (args) => gitRebaseTask(args, REBASE_FLAGS.ABORT),
+  [REBASE_FLAGS.SKIP]: (args) => gitRebaseTask(args, REBASE_FLAGS.SKIP),
 };

@@ -1,20 +1,25 @@
-import { getIndex } from '#utils/get-index';
 import { getCurrentBranch } from '#utils/get-current-branch';
+import { getIndex } from '#utils/get-index';
+import { VALID_COMMANDS, VALID_COMMAND_TYPES } from '../constants.js';
 import { addTask } from './task.js';
-import { validCommands } from '../constants.js';
 
 export async function gitPushTask(args, isForce) {
-  const gPushIndex = getIndex(4);
-  const gPushForceIndex = isForce && getIndex(6);
-  const index = gPushForceIndex ?? gPushIndex;
+  const commandType = VALID_COMMAND_TYPES.PUSH;
+  const forceCommandType = VALID_COMMAND_TYPES.FORCE;
 
-  if (index > -1) {
-    const currentBranch = await getCurrentBranch();
-    const branch = args[index + 1] && !validCommands.includes(args[index + 1]) ? args[index + 1] : currentBranch;
-    const force = gPushForceIndex > -1;
+  const validCommands = VALID_COMMANDS[commandType];
 
-    return addTask('git', ['push', force && '-f', `origin ${branch}`].filter(Boolean));
-  }
+  const gPushIndex = getIndex(commandType);
+  const gPushForceIndex = isForce && getIndex(forceCommandType);
+
+  if (gPushIndex == null) return;
+
+  const currentBranch = await getCurrentBranch();
+  const branch =
+    args[gPushIndex + 1] && !validCommands.includes(args[gPushIndex + 1]) ? args[gPushIndex + 1] : currentBranch;
+  const hasForceFlag = gPushForceIndex != null;
+
+  return addTask('git', ['push', hasForceFlag && '-f', `origin ${branch}`].filter(Boolean));
 }
 
 export async function gitPushForceTask(args) {
