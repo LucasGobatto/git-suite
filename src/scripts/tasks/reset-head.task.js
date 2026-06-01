@@ -13,7 +13,7 @@ export function gitResetHeadTask(args) {
   const nextArgument = args[gResetHeadIndex + 1];
 
   if (!validCommands.includes(nextArgument) && !!nextArgument && !Number(nextArgument)) {
-    throw new Error('Reset head must come with a number "-rh 1". If pass anything, the default is 1.');
+    throw new Error('Reset head must come with a number "-rh 1". If none is provided, the default is 1.');
   }
 
   const gResetHeadParam = Number.isNaN(+nextArgument) ? 1 : +nextArgument;
