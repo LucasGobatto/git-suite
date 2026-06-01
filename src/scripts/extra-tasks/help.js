@@ -61,5 +61,5 @@ export function help() {
   console.info(`${INDENT}${PROGRAM} -a src/index.js,src/utils.js -m "fix login" --fx`);
   console.info(`${INDENT}${PROGRAM} -r main develop`);
   console.info(`${INDENT}${PROGRAM} -rc`);
-  console.info();
+  console.log();
 }
