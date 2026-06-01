@@ -32,9 +32,10 @@ export function gitCreateBranch(args) {
   const gCheckoutBranchIndex = getIndex(commandType);
 
   if (gCheckoutBranchIndex == null) return;
+
   const nextArgument = args[gCheckoutBranchIndex + 1];
 
-  if (!allValidCommands || allValidCommands.includes(nextArgument)) {
+  if (!nextArgument || allValidCommands.includes(nextArgument)) {
     throw new Error('Provide the branch name. `gs -cb branch-name`');
   }
 
