@@ -10,8 +10,10 @@ export function verifyArgs(fn) {
       process.exit(1);
     }
 
+    const allValidCommands = Object.values(VALID_COMMANDS).flat();
+
     const invalidParam = args.find(
-      (param) => param[0] === '-' && !Object.values(VALID_COMMANDS).flat().includes(param),
+      (param) => param[0] === '-' && !allValidCommands.includes(param),
     );
 
     if (invalidParam) {
