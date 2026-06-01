@@ -27,22 +27,16 @@ export function gitCheckoutTask(args) {
 
 export function gitCreateBranch(args) {
   const commandType = VALID_COMMAND_TYPES.CREATE_BRANCH;
-  const validCommands = VALID_COMMANDS[commandType];
+  const allValidCommands = Object.values(VALID_COMMANDS).flat();
 
   const gCheckoutBranchIndex = getIndex(commandType);
 
   if (gCheckoutBranchIndex == null) return;
-  if (validCommands.includes(args[gCheckoutBranchIndex + 1]) || !args[gCheckoutBranchIndex + 1]) {
+  const nextArgument = args[gCheckoutBranchIndex + 1];
+
+  if (!allValidCommands || allValidCommands.includes(nextArgument)) {
     throw new Error('Provide the branch name. `gs -cb branch-name`');
   }
 
-  if (args.length !== 2) {
-    throw new Error(
-      `Invalid arguments: ${args.slice(2).join(', ')}. Checkout accepts only 2 args \`gs -cb branch-name\``,
-    );
-  }
-
-  const branchName = args[gCheckoutBranchIndex + 1];
-
-  return addTask('git', ['checkout', '-b', branchName]);
+  return addTask('git', ['checkout', '-b', nextArgument]);
 }
