@@ -1,23 +1,31 @@
 import { getIndex } from '#utils/get-index';
-import { commitType, validCommands, types } from '../constants.js';
+import { VALID_COMMAND_TYPES, VALID_COMMANDS, COMMIT_MESSAGE_LABEL } from '../constants.js';
 import { addTask } from './task.js';
 
 export function gitCommitTask(args) {
-  const gCommitIndex = getIndex(2);
-  const gCommitTypeIndex = args.findIndex((param) => commitType.includes(param));
+  const gitMessageCommandType = VALID_COMMAND_TYPES.MESSAGE;
+  const gitCommitLabelCommandType = VALID_COMMAND_TYPES.COMMIT_MESSAGE_LABELS;
 
-  if (gCommitIndex > -1) {
-    if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
-      throw new Error('Flag message must come with a value like `gs -m "commit message"`.');
-    }
+  const validCommitCommands = VALID_COMMANDS[gitMessageCommandType];
 
-    if (gCommitTypeIndex > -1 && gCommitIndex === -1) {
-      throw new Error('Commit types flags must come with commit flag `gs -m "commit message" --fx`.');
-    }
+  const gCommitIndex = getIndex(gitMessageCommandType);
+  const gCommitTypeIndex = getIndex(gitCommitLabelCommandType);
 
-    const gitCommitParam = args[gCommitIndex + 1];
-    const gCommitType = gCommitTypeIndex > -1 && types[args[gCommitTypeIndex]];
+  if (gCommitIndex == null) return;
 
-    return addTask('git', ['commit', `-m "${gCommitType ? `${gCommitType}: ${gitCommitParam}` : gitCommitParam}"`]);
+  if (validCommitCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
+    throw new Error('The flag message must come with a value, for example: `gs -m "commit message"`.');
   }
+
+  if (gCommitTypeIndex != null && gCommitIndex == null) {
+    throw new Error(
+      'The commit types flags must come with the commit flag, for example: `gs -m "commit message" --fx`.',
+    );
+  }
+
+  const gitCommitParam = args[gCommitIndex + 1];
+  const gCommitFlag = args[gCommitTypeIndex];
+  const gCommitType = gCommitTypeIndex != null && COMMIT_MESSAGE_LABEL[gCommitFlag];
+
+  return addTask('git', ['commit', `-m "${gCommitType ? `${gCommitType}: ${gitCommitParam}` : gitCommitParam}"`]);
 }

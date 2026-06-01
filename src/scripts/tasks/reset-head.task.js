@@ -1,19 +1,22 @@
-import { validCommands } from '../constants.js';
-import { addTask } from './task.js';
 import { getIndex } from '#utils/get-index';
+import { VALID_COMMANDS, VALID_COMMAND_TYPES } from '../constants.js';
+import { addTask } from './task.js';
 
 export function gitResetHeadTask(args) {
-  const gResetHeadIndex = getIndex(8);
+  const commandType = VALID_COMMAND_TYPES.RESET_HEAD;
+  const validCommands = VALID_COMMANDS[commandType];
 
-  if (gResetHeadIndex > -1) {
-    const nextArgumment = args[gResetHeadIndex + 1];
+  const gResetHeadIndex = getIndex(commandType);
 
-    if (!validCommands.includes(nextArgumment) && !!nextArgumment && !Number(nextArgumment)) {
-      throw new Error('Reset head must come with a number "-rh 1". If pass anything, the default is 1.');
-    }
+  if (gResetHeadIndex == null) return;
 
-    const gResetHeadParam = Number.isNaN(+args[nextArgumment]) ? 1 : nextArgumment;
+  const nextArgument = args[gResetHeadIndex + 1];
 
-    return addTask('git', ['reset', `HEAD~${gResetHeadParam}`]);
+  if (!validCommands.includes(nextArgument) && !!nextArgument && !Number(nextArgument)) {
+    throw new Error('Reset head must come with a number "-rh 1". If none is provided, the default is 1.');
   }
+
+  const gResetHeadParam = Number.isNaN(+nextArgument) ? 1 : +nextArgument;
+
+  return addTask('git', ['reset', `HEAD~${gResetHeadParam}`]);
 }

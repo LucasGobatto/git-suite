@@ -1,16 +1,17 @@
 import { log } from '#log';
-import { getExtraCommandIndex } from '#utils/get-index';
 import { addTask } from '#tasks';
+import { getExtraCommandIndex } from '#utils/get-index';
+import { VALID_COMMANDS } from '../constants.js';
 
-export const setDefatultConflictEditor = (args) => {
-  const editorFlag = getExtraCommandIndex(1);
+export const setDefaultConflictEditorTask = (args) => {
+  const editorFlag = getExtraCommandIndex(VALID_COMMANDS.EDITOR_VSC);
 
-  if (editorFlag > -1) {
-    if (args.lenght > 1) {
-      throw new Error(`Invalid argments - ${args.splice(1).join(', ')}`);
-    }
+  if (editorFlag == null) return;
 
-    log.info('Setting VSCode as default editor for resolve conflits...');
-    return addTask('git', ['config', '--global', 'core.editor', 'code', '--wait']);
+  if (args.length > 1) {
+    throw new Error(`Invalid arguments - ${args.splice(1).join(', ')}`);
   }
+
+  log.info('Setting VSCode as default editor for resolve conflicts...');
+  return addTask('git', ['config', '--global', 'core.editor', 'code', '--wait']);
 };

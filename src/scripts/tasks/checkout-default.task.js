@@ -1,33 +1,23 @@
-import { log } from '#log';
-import { getIndex } from '#utils/get-index';
 import { getDefaultBranch } from '#utils/get-default-branch';
-import { addTask, exec } from './task.js';
+import { getIndex } from '#utils/get-index';
+import { VALID_COMMANDS } from '../constants.js';
+import { addTask } from './task.js';
 
 export async function gitCheckoutDefaultBranch(args) {
-  const gCheckoutDevelopIndex = getIndex(16, false);
+  const gCheckoutDevelopIndex = getIndex(VALID_COMMANDS.CHECKOUT_DEFAULT);
 
-  if (gCheckoutDevelopIndex > -1) {
-    if (args.length != 1) {
-      throw new Error(
-        `Invalid arguments: ${args
-          .slice(1)
-          .join(', ')}. Checkout ${defaultBranch} accepts only one argument \`gs -cd\`.`,
-      );
-    }
+  if (gCheckoutDevelopIndex == null) return;
 
-    const defaultBranch = await getDefaultBranch();
-
-    try {
-      const checkoutTask = addTask('git', ['checkout', defaultBranch]);
-      const pullTask = addTask('git', ['pull', 'origin', defaultBranch]);
-
-      await exec(checkoutTask);
-      await exec(pullTask);
-
-      log.success('Git flow finished successfully!');
-      process.exit(0);
-    } catch (error) {
-      log.error(error.message);
-    }
+  if (args.length != 1) {
+    throw new Error(
+      `Invalid arguments: ${args.slice(1).join(', ')}. Checkout ${defaultBranch} accepts only one argument \`gs -cd\`.`,
+    );
   }
+
+  const defaultBranch = await getDefaultBranch();
+
+  const checkoutTask = addTask('git', ['checkout', defaultBranch]);
+  const pullTask = addTask('git', ['pull', 'origin', defaultBranch]);
+
+  return [checkoutTask, pullTask];
 }

@@ -1,10 +1,15 @@
 import { log } from '#log';
-import { mapFlagToGitCommand, mapExtraCommands } from './map-tasks.js';
+import { mapCommandTypeToTask } from './map-tasks.js';
+import { mapFlagToCommandType } from './constants.js';
 import { exec } from '#tasks';
 
 export async function runGitTask(currentArg, allArgs) {
-  const gitTask = mapFlagToGitCommand[currentArg];
-  const tasks = await gitTask(allArgs);
+  const commandType = mapFlagToCommandType(currentArg);
+  const gitTask = mapCommandTypeToTask[commandType];
+  
+  if (gitTask == null) return;
+
+  const tasks = await gitTask(allArgs, commandType);
 
   try {
     if (Array.isArray(tasks)) {
@@ -18,11 +23,12 @@ export async function runGitTask(currentArg, allArgs) {
   }
 }
 
-export async function runExtraCommands(currentArg, allArgs) {
-  const extraCommand = mapExtraCommands[currentArg];
+export async function runNonGitTask(currentArg, allArgs) {
+  const commandType = mapFlagToCommandType(currentArg);
+  const execTask = mapCommandTypeToTask[commandType];
 
   try {
-    const task = extraCommand(allArgs);
+    const task = execTask(allArgs);
 
     if (task) {
       await exec(task);

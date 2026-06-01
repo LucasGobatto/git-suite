@@ -1,42 +1,42 @@
 import { getCurrentBranch } from '#utils/get-current-branch';
 import { getDefaultBranch } from '#utils/get-default-branch';
-import { getIndex, getRebaseFlagIndex } from '#utils/get-index';
-import { mapFlag } from '../constants.js';
+import { getIndex } from '#utils/get-index';
+import { REBASE_FLAGS, VALID_REBASE_FLAGS, VALID_COMMANDS } from '../constants.js';
 import { addTask } from './task.js';
 
-export async function gitRebaseTask(args) {
-  const gRebaseIndex = getIndex(10);
-  const gRebaseFlagIndex = getRebaseFlagIndex();
+export async function gitRebaseTask(args, rebaseFlag) {
+  const gRebaseIndex = getIndex(rebaseFlag);
   const currentBranch = await getCurrentBranch();
-  const defaultHeadBranch = await getDefaultBranch();
+  const defaultBranch = await getDefaultBranch();
 
-  if (gRebaseIndex > -1) {
+  if (gRebaseIndex == null) return;
+
+  if (rebaseFlag === REBASE_FLAGS.REBASE) {
     const [head, origin] = [args[gRebaseIndex + 1], args[gRebaseIndex + 2]];
+    const allValidCommands = Object.values(VALID_COMMANDS).flat();
 
-    const goToHeadBranch = addTask('git', ['checkout', head ?? defaultHeadBranch]);
-    const gitPull = addTask('git', ['pull', 'origin', head ?? defaultHeadBranch]);
+    const isValidHeadBranch = !allValidCommands.includes(head); // next argument is not a git comment
+    const validHeadBranch = head && isValidHeadBranch ? head : defaultBranch; // default to default branch (e.g. main or develop)
+
+    if (isValidHeadBranch && !origin) throw new Error('Origin is required when rebasing to a branch other than the default branch.');
+
+    const goToHeadBranch = addTask('git', ['checkout', validHeadBranch]);
+    const gitPull = addTask('git', ['pull', 'origin', validHeadBranch]);
     const goToCurrentBranch = addTask('git', ['checkout', origin ?? currentBranch]);
-    const makeRebase = addTask('git', ['rebase', head ?? defaultHeadBranch]);
+    const makeRebase = addTask('git', ['rebase', validHeadBranch]);
 
     return [goToHeadBranch, gitPull, goToCurrentBranch, makeRebase];
   }
 
-  if (gRebaseFlagIndex > -1) {
-    if (args.length > 1) {
-      throw new Error(
-        `Invalid param ${args.slice(1).join(', ')}. Choose one flag to continue rebase \`--ra\`, \`--rs\` or \`--rc\` `,
-      );
-    }
+  if (args.length > 1)
+    throw new Error(
+      `Invalid param ${args.slice(1).join(', ')}. Choose one flag to continue rebase \`-ra\`, \`-rs\` or \`-rc\` `,
+    );
 
-    const flag = mapFlag[args[gRebaseFlagIndex]];
+  const flag = VALID_REBASE_FLAGS[rebaseFlag][0];
 
-    if (flag) {
-      const gitAdd = addTask('git', ['add', '.']);
-      const gitRebase = addTask('git', ['rebase', flag]);
+  const gitAdd = addTask('git', ['add', '.']);
+  const gitRebase = addTask('git', ['rebase', flag]);
 
-      return [gitAdd, gitRebase];
-    } else {
-      throw new Error(`Unexpected error. Received args: ${args.join(', ')}`);
-    }
-  }
+  return [gitAdd, gitRebase];
 }

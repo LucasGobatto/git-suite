@@ -1,43 +1,48 @@
-import { validCommands } from '../constants.js';
 import { getIndex } from '#utils/get-index';
+import { VALID_COMMANDS, VALID_COMMAND_TYPES } from '../constants.js';
 import { addTask } from './task.js';
 
-export function gitCheckoutTaks(args) {
-  const gCheckoutIndex = getIndex(12);
+export function gitCheckoutTask(args) {
+  const commandType = VALID_COMMAND_TYPES.CHECKOUT;
+  const validCommands = VALID_COMMANDS[commandType];
 
-  if (gCheckoutIndex > -1) {
-    if (validCommands.includes(args[gCheckoutIndex + 1]) || !args[gCheckoutIndex + 1]) {
-      throw new Error('Provide the branch name to checkout. `gs -c branch-name`');
-    }
+  const gCheckoutIndex = getIndex(commandType);
 
-    if (args.length < 2) {
-      throw new Error(
-        `Invalid arguments: ${args.slice(2).join(', ')}. Checkout accepts only 2 args \`gs -c branch-name\``,
-      );
-    }
+  if (gCheckoutIndex == null) return;
 
-    const branchName = args[gCheckoutIndex + 1];
-
-    return addTask('git', ['checkout', branchName]);
+  if (validCommands.includes(args[gCheckoutIndex + 1]) || !args[gCheckoutIndex + 1]) {
+    throw new Error('Provide the branch name to checkout. `gs -c branch-name`');
   }
+
+  if (args.length < 2) {
+    throw new Error(
+      `Invalid arguments: ${args.slice(2).join(', ')}. Checkout accepts only 2 args \`gs -c branch-name\``,
+    );
+  }
+
+  const branchName = args[gCheckoutIndex + 1];
+
+  return addTask('git', ['checkout', branchName]);
 }
 
 export function gitCreateBranch(args) {
-  const gCheckoutBranchIndex = getIndex(14);
+  const commandType = VALID_COMMAND_TYPES.CREATE_BRANCH;
+  const validCommands = VALID_COMMANDS[commandType];
 
-  if (gCheckoutBranchIndex > -1) {
-    if (validCommands.includes(args[gCheckoutBranchIndex + 1]) || !args[gCheckoutBranchIndex + 1]) {
-      throw new Error('Provide the branch name. `gs -cb branch-name`');
-    }
+  const gCheckoutBranchIndex = getIndex(commandType);
 
-    if (args.length !== 2) {
-      throw new Error(
-        `Invalid arguments: ${args.slice(2).join(', ')}. Checkout accepts only 2 args \`gs -cb branch-name\``,
-      );
-    }
-
-    const branchName = args[gCheckoutBranchIndex + 1];
-
-    return addTask('git', ['checkout', '-b', branchName]);
+  if (gCheckoutBranchIndex == null) return;
+  if (validCommands.includes(args[gCheckoutBranchIndex + 1]) || !args[gCheckoutBranchIndex + 1]) {
+    throw new Error('Provide the branch name. `gs -cb branch-name`');
   }
+
+  if (args.length !== 2) {
+    throw new Error(
+      `Invalid arguments: ${args.slice(2).join(', ')}. Checkout accepts only 2 args \`gs -cb branch-name\``,
+    );
+  }
+
+  const branchName = args[gCheckoutBranchIndex + 1];
+
+  return addTask('git', ['checkout', '-b', branchName]);
 }
