@@ -5,19 +5,20 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "node ./src/index.js"
+    "test": "node ./src/index.js",
+    "format": "prettier --write \"src/**/*.js\""
   },
   "bin": {
     "gs": "src/index.js"
   },
   "dependencies": {
-    "chalk": "5.0.1"
+    "chalk": "5.0.1",
+    "dotenv": "16.4.7"
   },
   "engines": {
     "node": ">=16.14.2",
     "npm": ">=7.0.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LucasGobatto/git-suite.git"
@@ -37,5 +38,8 @@
     "#log": "./src/log/log.js",
     "#utils/*": "./src/scripts/utils/*.js",
     "#tasks": "./src/scripts/tasks/index.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
   }
 }

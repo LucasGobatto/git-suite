@@ -1,17 +1,20 @@
-import { validCommands } from '../constants.js';
-import { getIndex } from '#utils/get-index';
 import { getCurrentBranch } from '#utils/get-current-branch';
+import { getIndex } from '#utils/get-index';
+import { VALID_COMMANDS, VALID_COMMAND_TYPES } from '../constants.js';
 import { addTask } from './task.js';
 
 export async function gitPullTask(args) {
-  const gPullIndex = getIndex(17, false);
+  const commandType = VALID_COMMAND_TYPES.PULL;
+  const validCommands = VALID_COMMANDS[commandType];
 
-  if (gPullIndex > -1) {
-    const currentBranch = await getCurrentBranch();
+  const gPullIndex = getIndex(commandType);
 
-    const branchName =
-      args[gPullIndex + 1] && !validCommands.includes(args[gPullIndex + 1]) ? args[gPullIndex + 1] : currentBranch;
+  if (gPullIndex == null) return;
 
-    return addTask('git', ['pull', 'origin', branchName]);
-  }
+  const currentBranch = await getCurrentBranch();
+
+  const branchName =
+    args[gPullIndex + 1] && !validCommands.includes(args[gPullIndex + 1]) ? args[gPullIndex + 1] : currentBranch;
+
+  return addTask('git', ['pull', 'origin', branchName]);
 }

@@ -1,19 +1,18 @@
-import { extraCommands, rebaseFlags, validCommands } from '../constants.js';
+import { log } from '#log';
+import { NON_GIT_COMMANDS, VALID_COMMANDS, VALID_REBASE_FLAGS } from '../constants.js';
 
-export function getIndex(index, haveTooOptions = true) {
+export function getIndex(commandType) {
+  log.debug('COMMAND TYPE -', commandType);
   const args = process.argv.slice(2);
 
-  return args.findIndex((param) => param === validCommands[index] || (haveTooOptions && param === validCommands[index + 1]));
-}
+  const argIndex = args.findIndex((param) => VALID_COMMANDS[commandType].includes(param));
 
-export function getRebaseFlagIndex() {
-  const args = process.argv.slice(2);
-
-  return args.findIndex((param) => rebaseFlags.includes(param));
+  return argIndex === -1 ? null : argIndex;
 }
 
 export function getExtraCommandIndex(index) {
   const args = process.argv.slice(2);
+  const nonGitCommands = Object.values(NON_GIT_COMMANDS).flat();
 
-  return args.findIndex((param) => extraCommands.includes(param) && extraCommands[index] === param);
+  return args.findIndex((param) => nonGitCommands.includes(param) && nonGitCommands[index] === param);
 }

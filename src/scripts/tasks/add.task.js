@@ -1,24 +1,28 @@
-import { validCommands } from '../constants.js';
 import { getIndex } from '#utils/get-index';
+import { VALID_COMMAND_TYPES, VALID_COMMANDS } from '../constants.js';
 import { addTask } from './task.js';
 
 export function gitAddTask(args) {
-  const gAddIndex = getIndex(0);
+  const commandType = VALID_COMMAND_TYPES.ADD;
+  const allValidCommands = Object.values(VALID_COMMANDS).flat();
 
-  if (gAddIndex > -1) {
-    const gitAddFiles = !validCommands.includes(args[gAddIndex + 1]) ? args[gAddIndex + 1] : undefined;
+  const gAddIndex = getIndex(commandType);
 
-    const gaa = [];
+  if (gAddIndex == null) return;
 
-    if (gitAddFiles) {
-      gitAddFiles.split(',').forEach((file) => {
-        const task = addTask('git', ['add', file]);
-        gaa.push(task);
-      });
-    } else {
-      gaa.push(addTask('git', ['add', '.']));
-    }
+  const nextArgument = args[gAddIndex + 1];
+  const gitAddFiles = !allValidCommands.includes(nextArgument) ? nextArgument : undefined;
 
-    return gaa;
+  const gaa = [];
+
+  if (gitAddFiles) {
+    gitAddFiles.split(',').forEach((file) => {
+      const task = addTask('git', ['add', file]);
+      gaa.push(task);
+    });
+  } else {
+    gaa.push(addTask('git', ['add', '.']));
   }
+
+  return gaa;
 }
