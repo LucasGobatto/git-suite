@@ -1,5 +1,5 @@
 import { log } from '#log';
-import { NON_GIT_COMMANDS, VALID_COMMANDS, VALID_REBASE_FLAGS } from '../constants.js';
+import { NON_GIT_COMMANDS, VALID_COMMANDS } from '../constants.js';
 
 export function getIndex(commandType) {
   log.debug('COMMAND TYPE -', commandType);
