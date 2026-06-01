@@ -1,7 +1,7 @@
 import { getCurrentBranch } from '#utils/get-current-branch';
 import { getDefaultBranch } from '#utils/get-default-branch';
 import { getIndex } from '#utils/get-index';
-import { REBASE_FLAGS, VALID_REBASE_FLAGS, VALID_COMMANDS } from '../constants.js';
+import { REBASE_FLAGS, VALID_COMMANDS, VALID_REBASE_FLAGS } from '../constants.js';
 import { addTask } from './task.js';
 
 export async function gitRebaseTask(args, rebaseFlag) {
