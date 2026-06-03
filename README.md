@@ -69,37 +69,37 @@ Run `gs --help` at any time for the full list of available flags.
 
 ### General
 
-| Flag | Description |
-| --- | --- |
-| `--help` | Show help |
+| Flag           | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `--help`       | Show help                                      |
 | `--editor-vsc` | Set VS Code as the default git conflict editor |
 
 ### Git commands
 
-| Flag | Description |
-| --- | --- |
-| `-a`, `--add [files]` | Stage files. Defaults to `git add .`. Separate multiple files with commas: `-a file1.js,file2.js` |
-| `-m`, `--message <message>` | Commit with a message |
-| `-c`, `--checkout <branch>` | Switch to a branch |
-| `-cb`, `--checkout-branch <branch>` | Create and switch to a new branch |
-| `-cd` | Checkout and pull the repository default branch |
-| `-pl`, `--pull [branch]` | Pull from origin. Defaults to the current branch |
-| `-p`, `--push [branch]` | Push to origin. Defaults to the current branch |
-| `-f`, `--force` | Force push. Must be used with `-p` or `--push` |
-| `-rh`, `--reset-head [n]` | Reset to `HEAD~n`. Defaults to `1` |
-| `-r`, `--rebase [head] [target]` | Rebase `target` onto `head`. Defaults to the default branch and the current branch |
+| Flag                                | Description                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `-a`, `--add [files]`               | Stage files. Defaults to `git add .`. Separate multiple files with commas: `-a file1.js,file2.js` |
+| `-m`, `--message <message>`         | Commit with a message                                                                             |
+| `-c`, `--checkout <branch>`         | Switch to a branch                                                                                |
+| `-cb`, `--checkout-branch <branch>` | Create and switch to a new branch                                                                 |
+| `-cd`                               | Checkout and pull the repository default branch                                                   |
+| `-pl`, `--pull [branch]`            | Pull from origin. Defaults to the current branch                                                  |
+| `-p`, `--push [branch]`             | Push to origin. Defaults to the current branch                                                    |
+| `-f`, `--force`                     | Force push. Must be used with `-p` or `--push`                                                    |
+| `-rh`, `--reset-head [n]`           | Reset to `HEAD~n`. Defaults to `1`                                                                |
+| `-r`, `--rebase [head] [target]`    | Rebase `target` onto `head`. Defaults to the default branch and the current branch                |
 
 ### Commit message prefixes
 
 Use with `-m` or `--message` to prefix the commit message with a conventional commit type:
 
-| Flag | Prefix |
-| --- | --- |
-| `--ft` | `feat:` |
-| `--fx` | `fix:` |
-| `--e` | `enhance:` |
-| `--c` | `chore:` |
-| `--d` | `docs:` |
+| Flag   | Prefix     |
+| ------ | ---------- |
+| `--ft` | `feat:`    |
+| `--fx` | `fix:`     |
+| `--e`  | `enhance:` |
+| `--c`  | `chore:`   |
+| `--d`  | `docs:`    |
 
 Example:
 
@@ -112,11 +112,11 @@ gs -m "add dark mode toggle" --ft
 
 Use after resolving conflicts during an interactive rebase:
 
-| Flag | Description |
-| --- | --- |
-| `-rc`, `--continue` | Continue the rebase |
-| `-ra`, `--abort` | Abort the rebase |
-| `-rs`, `--skip` | Skip the current rebase commit |
+| Flag                | Description                    |
+| ------------------- | ------------------------------ |
+| `-rc`, `--continue` | Continue the rebase            |
+| `-ra`, `--abort`    | Abort the rebase               |
+| `-rs`, `--skip`     | Skip the current rebase commit |
 
 You can optionally stage changes before continuing:
 
@@ -155,6 +155,21 @@ git checkout develop
 git rebase main
 ```
 
+Omit the origin branch will rebase the current branch onto the target:
+
+```sh
+gs -r main
+```
+
+Equivalent to:
+
+```sh
+git checkout main
+git pull origin main
+git checkout <current-branch>
+git rebase main
+```
+
 **Switch to the default branch and pull latest**
 
 ```sh
@@ -178,12 +193,12 @@ gs -p -f
 
 Set the log verbosity with the `LOG_LEVEL` environment variable:
 
-| Value | Output |
-| --- | --- |
-| `debug` | All logs including debug output |
-| `info` | Info, success, error, and git output (default) |
-| `success` | Success, error, and git output |
-| `error` | Errors and git output only |
+| Value     | Output                                         |
+| --------- | ---------------------------------------------- |
+| `debug`   | All logs including debug output                |
+| `info`    | Info, success, error, and git output (default) |
+| `success` | Success, error, and git output                 |
+| `error`   | Errors and git output only                     |
 
 Example:
 
