@@ -28,20 +28,35 @@ export function help() {
 
   printSection('General:');
   printLine(formatFlags(NON_GIT_COMMANDS[VALID_COMMAND_TYPES.HELP]), 'Show this help message');
-  printLine(formatFlags(NON_GIT_COMMANDS[VALID_COMMAND_TYPES.EDITOR_VSC]), 'Set VS Code as the default git conflict editor');
+  printLine(
+    formatFlags(NON_GIT_COMMANDS[VALID_COMMAND_TYPES.EDITOR_VSC]),
+    'Set VS Code as the default git conflict editor',
+  );
   console.info();
 
   printSection('Commands:');
   printLine(`${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.ADD])} [files]`, 'Stage files (default: git add .)');
   printLine(`${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.MESSAGE])} <message>`, 'Commit with a message');
   printLine(`${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.CHECKOUT])} <branch>`, 'Switch to a branch');
-  printLine(`${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.CREATE_BRANCH])} <branch>`, 'Create and switch to a branch');
+  printLine(
+    `${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.CREATE_BRANCH])} <branch>`,
+    'Create and switch to a branch',
+  );
   printLine(formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.CHECKOUT_DEFAULT]), 'Checkout and pull the default branch');
-  printLine(`${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.PULL])} [branch]`, 'Pull from origin (default: current branch)');
-  printLine(`${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.PUSH])} [branch]`, 'Push to origin (default: current branch)');
+  printLine(
+    `${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.PULL])} [branch]`,
+    'Pull from origin (default: current branch)',
+  );
+  printLine(
+    `${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.PUSH])} [branch]`,
+    'Push to origin (default: current branch)',
+  );
   printLine(formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.FORCE]), 'Force push (use with -p or --push)');
   printLine(`${formatFlags(VALID_COMMANDS[VALID_COMMAND_TYPES.RESET_HEAD])} [n]`, 'Reset HEAD~n (default: 1)');
-  printLine(`${formatFlags(VALID_REBASE_FLAGS.rebase)} [head] [target]`, 'Rebase target onto head (defaults: default branch, current branch)');
+  printLine(
+    `${formatFlags(VALID_REBASE_FLAGS.rebase)} [head] [target]`,
+    'Rebase target onto head (defaults: default branch, current branch)',
+  );
   console.info();
 
   printSection('Commit message prefixes (use with -m or --message):');

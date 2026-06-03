@@ -12,9 +12,7 @@ export function verifyArgs(fn) {
 
     const allValidCommands = Object.values(VALID_COMMANDS).flat();
 
-    const invalidParam = args.find(
-      (param) => param[0] === '-' && !allValidCommands.includes(param),
-    );
+    const invalidParam = args.find((param) => param[0] === '-' && !allValidCommands.includes(param));
 
     if (invalidParam) {
       log.error(`Param ${invalidParam} is not a valid command. Type \`gs --help\` to see list of commands.`);

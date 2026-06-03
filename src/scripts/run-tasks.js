@@ -6,7 +6,7 @@ import { exec } from '#tasks';
 export async function runGitTask(currentArg, allArgs) {
   const commandType = mapFlagToCommandType(currentArg);
   const gitTask = mapCommandTypeToTask[commandType];
-  
+
   if (gitTask == null) return;
 
   const tasks = await gitTask(allArgs, commandType);
