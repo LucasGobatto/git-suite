@@ -22,7 +22,8 @@ export const mapCommandTypeToTask = {
   [VALID_COMMAND_TYPES.CHECKOUT_DEFAULT]: gitCheckoutDefaultBranch,
   [VALID_COMMAND_TYPES.PULL]: gitPullTask,
   [VALID_COMMAND_TYPES.HELP]: help,
-  [VALID_COMMAND_TYPES.EDITOR_VSC]: setDefaultConflictEditorTask,
+  [VALID_COMMAND_TYPES.EDITOR_VSC]: (args) => setDefaultConflictEditorTask(args, VALID_COMMAND_TYPES.EDITOR_VSC),
+  [VALID_COMMAND_TYPES.EDITOR_VIM]: (args) => setDefaultConflictEditorTask(args, VALID_COMMAND_TYPES.EDITOR_VIM),
 
   [REBASE_FLAGS.REBASE]: (args) => gitRebaseTask(args, REBASE_FLAGS.REBASE),
   [REBASE_FLAGS.CONTINUE]: (args) => gitRebaseTask(args, REBASE_FLAGS.CONTINUE),
