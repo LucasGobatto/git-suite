@@ -17,12 +17,12 @@ export async function gitRebaseTask(args, rebaseFlag) {
 
     const isValidHeadBranch = !allValidCommands.includes(head); // next argument is not a git comment
     const validHeadBranch = head && isValidHeadBranch ? head : defaultBranch; // default to default branch (e.g. main or develop)
-
-    if (isValidHeadBranch && !origin) throw new Error('Origin is required when rebasing to a branch other than the default branch.');
+    const isValidOriginBranch = !allValidCommands.includes(origin);
+    const validOrigin = origin && isValidOriginBranch ? origin : currentBranch; // default to currnet branch
 
     const goToHeadBranch = addTask('git', ['checkout', validHeadBranch]);
     const gitPull = addTask('git', ['pull', 'origin', validHeadBranch]);
-    const goToCurrentBranch = addTask('git', ['checkout', origin ?? currentBranch]);
+    const goToCurrentBranch = addTask('git', ['checkout', validOrigin]);
     const makeRebase = addTask('git', ['rebase', validHeadBranch]);
 
     return [goToHeadBranch, gitPull, goToCurrentBranch, makeRebase];
@@ -30,16 +30,11 @@ export async function gitRebaseTask(args, rebaseFlag) {
 
   const hasAddFlag = args.some((arg) => VALID_COMMANDS[VALID_COMMAND_TYPES.ADD].includes(arg));
 
-  if (args.length > 1 && !hasAddFlag)
-    throw new Error(
-      `Invalid param ${args.slice(1).join(', ')}. Choose one flag to continue rebase \`-ra\`, \`-rs\` or \`-rc\` `,
-    );
-
   const flag = VALID_REBASE_FLAGS[rebaseFlag][1];
-  
+
   const gitRebase = addTask('git', ['rebase', flag]);
 
-  if (hasAddFlag) {
+  if (!hasAddFlag) {
     const gitAdd = addTask('git', ['add', '.']);
     return [gitAdd, gitRebase];
   }

@@ -7,17 +7,17 @@ async function runner(args) {
   try {
     for (const arg of args) {
       const isFlag = arg.indexOf('-') === 0;
-  
+
       if (!isFlag) continue;
-  
+
       if (Object.values(NON_GIT_COMMANDS).flat().includes(arg)) {
         await runNonGitTask(arg, args);
         continue;
       }
-  
+
       await runGitTask(arg, args);
     }
-  
+
     log.success('Git flow finished successfully!');
   } catch (error) {
     log.error(error.message);
