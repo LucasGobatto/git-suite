@@ -17,6 +17,7 @@ export const VALID_REBASE_FLAGS = {
 export const VALID_COMMAND_TYPES = {
   HELP: 'help',
   EDITOR_VSC: 'editor-vsc',
+  EDITOR_VIM: 'editor-vim',
   ADD: 'add',
   MESSAGE: 'message',
   COMMIT_MESSAGE_LABELS: 'commit-message-labels',
@@ -32,6 +33,12 @@ export const VALID_COMMAND_TYPES = {
 export const NON_GIT_COMMANDS = {
   [VALID_COMMAND_TYPES.HELP]: ['--help'],
   [VALID_COMMAND_TYPES.EDITOR_VSC]: ['--editor-vsc'],
+  [VALID_COMMAND_TYPES.EDITOR_VIM]: ['--editor-vim'],
+};
+
+export const EDITOR_GIT_COMMANDS = {
+  [VALID_COMMAND_TYPES.EDITOR_VSC]: ['"code"', '--wait'],
+  [VALID_COMMAND_TYPES.EDITOR_VIM]: ['"vim"', '--nofork'],
 };
 
 export const VALID_COMMANDS = {

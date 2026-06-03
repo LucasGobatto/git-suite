@@ -73,6 +73,7 @@ Run `gs --help` at any time for the full list of available flags.
 | -------------- | ---------------------------------------------- |
 | `--help`       | Show help                                      |
 | `--editor-vsc` | Set VS Code as the default git conflict editor |
+| `--editor-vim` | Set Vim as the default git conflict editor     |
 
 ### Git commands
 
