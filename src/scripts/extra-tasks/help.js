@@ -32,6 +32,10 @@ export function help() {
     formatFlags(NON_GIT_COMMANDS[VALID_COMMAND_TYPES.EDITOR_VSC]),
     'Set VS Code as the default git conflict editor',
   );
+  printLine(
+    formatFlags(NON_GIT_COMMANDS[VALID_COMMAND_TYPES.EDITOR_VIM]),
+    'Set Vim as the default git conflict editor',
+  );
   console.info();
 
   printSection('Commands:');
